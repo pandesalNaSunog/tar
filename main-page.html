@@ -23,6 +23,22 @@
                 }
             }
         });
+        
+        var logoutButton = $('#logOut');
+        logoutButton.click(function(){
+            if(confirm('Are You Sure?') == true){
+                loadingScreen.show();
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/logout.php',
+                    success:function(response){
+                        if( response == "index.html"){
+                            window.location.replace(response);
+                        }
+                    }
+                })
+            }
+        });
     });
 </script>
 <style>
