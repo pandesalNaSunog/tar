@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Top And Repair</title>
+    <link rel="stylesheet" href="bootstrap.css">
+    <script src="bootstrap.js"></script>
+    <script src="jquery.js"></script>
+</head>
+<script>
+    $(document).ready(function(){
+        //hidden parts
+        $('.loadingScreen').hide();
+        
+        var loadingScreen = $('#loadingScreen');
+        
+        $.ajax({
+            type: 'GET',
+            url: 'php/sessioncheck.php',
+            success:function(response){
+                if( response == 'index.html'){
+                    window.location.replace(response);
+                }
+            }
+        });
+        
+        var logoutButton = $('#logOut');
+        var userSection = $('#userSection');
+        
+        $.ajax({
+            type: 'POST',
+            url: 'php/getUsers.php',
+            success: function(response){
+                var data = JSON.parse(response);
+                $(data).each(function(index,value){
+                    userSection.append(`
+                        <div>
+                            <h1>${value.last_name}, ${value.first_name} <sub>${value.contact_number}</sub> </h1>
+                        </div>
+                    `);
+                })
+            }
+        });
+        
+        logoutButton.click(function(){
+            if(confirm('Are You Sure?') == true){
+                loadingScreen.show();
+                $.ajax({
+                    type: 'POST',
+                    url: 'php/logout.php',
+                    success:function(response){
+                        if( response == "index.html"){
+                            window.location.replace(response);
+                        }
+                    }
+                })
+            }
+        });
+    });
+</script>
+<style>
+    #loader{
+        animation: loader 1.3s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+    }
+    @keyframes loader{
+        to{
+            transform: rotate(360deg);
+        }
+    }
+</style>
+<body>
+   <!-- loading screen -->
+    <div class="loadingScreen" style="position: absolute;z-index: 99;width: 100%;height: 100vh;background-color: rgba(0,0,0,0.5);display: flex;align-items: center;justify-content: center;">
+       <img id="loader" src="logo.png" alt="TAR logo" class="img-fluid" style="width: auto; max-height: 50px">
+   </div>
+   <header class="sticky-top bg-primary shadow-lg">
+       <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <div class="navbar-brand m-0">
+                    <img id="logo-ni-lola" src="logo.png" height="70px" width="70px" alt="">
+                </div>
+                <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav-menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="nav-menu" class="collapse navbar-collapse">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link btn btn-warning text-dark mx-5 px-3 shadow" id="logOut">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+   </header>
+   <main>
+       <section id="userSection">
+           
+       </section>
+   </main>
+   <footer></footer>
+</body>
+</html>
