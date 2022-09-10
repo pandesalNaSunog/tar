@@ -25,6 +25,23 @@
         });
         
         var logoutButton = $('#logOut');
+        var userSection = $('#userSection');
+        
+        $.ajax({
+            type: 'POST',
+            url: 'php/getUsers.php',
+            success: function(response){
+                var data = JSON.parse(response);
+                $(data).each(function(index,value){
+                    userSection.append(`
+                        <div>
+                            <h1>${value.last_name}, ${value.first_name} <sub>${value.contact_number}</sub> </h1>
+                        </div>
+                    `);
+                })
+            }
+        });
+        
         logoutButton.click(function(){
             if(confirm('Are You Sure?') == true){
                 loadingScreen.show();
@@ -78,7 +95,9 @@
         </nav>
    </header>
    <main>
-       <h1>Hello World!!!</h1>
+       <section id="userSection">
+           
+       </section>
    </main>
    <footer></footer>
 </body>
