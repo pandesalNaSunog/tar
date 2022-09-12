@@ -10,7 +10,7 @@
 <script>
     $(document).ready(function(){
         //hidden parts
-        $('#approvedUserSection').hide();
+        $('#approvedUserSection,#mechanicsSection,#requestMechanicsSection').hide();
         
         var loadingScreen = $('.loadingScreen');
         
@@ -28,12 +28,127 @@
         
         var logoutButton = $('#logOut');
         var userSection = $('#userSection');
+        var mechanicsSection = $('#mechanicsSection');
         var approvedUserSection = $('#approvedUserSection');
+        var requestMechanicsSection = $('#requestMechanicsSection');
+        var requestMechanicsTable = $('#requestMechanicsTable');
         var userTable = $('#userTable');
         var approvedUsersTable = $('#approvedUserTable');
+        var approvedMechanicsTable = $('#approvedMechanicsTable');
         var navApprovedAccounts = $('#navApprovedAccounts');
         var navAccountRequests = $('#navAccountRequests');
+        var navRequestMechanics = $('#navRequestMechanics');
+        var navMechanics = $('#navMechanics');
         var globalProductId = 0;
+        var userFirstNameEdit = $('#userFirstNameEdit');
+        var userLastNameEdit = $('#userLastNameEdit');
+        var userEmailEdit = $('#userEmailEdit');
+        var userContactNumberEdit = $('#userContactNumberEdit');
+        var userNameUpdateBtn = $('#userNameUpdateBtn');
+        var userEmailUpdateBtn = $('#userEmailUpdateBtn');
+        var userContactNumberUpdateBtn = $('#userContactNumberUpdateBtn');
+        var updateApprovedUserModal = $('#updateApprovedUserModal');
+        
+        userFirstNameEdit.on('keydown', function(){
+            $(this).removeClass('is-invalid');
+        });
+        userLastNameEdit.on('keydown', function(){
+            $(this).removeClass('is-invalid');
+        });
+        userEmailEdit.on('keydown', function(){
+            $(this).removeClass('is-invalid');
+        });
+        userContactNumberEdit.on('keydown', function(){
+            $(this).removeClass('is-invalid');
+        });
+        
+        userNameUpdateBtn.click(function(){
+            if(userFirstNameEdit.val() == ""){
+                userFirstNameEdit.addClass('is-invalid');
+            }
+            if(userLastNameEdit.val() == ""){
+                userLastNameEdit.addClass('is-invalid');
+            }
+            if(userFirstNameEdit.val() && userLastNameEdit.val() != ""){
+                if(confirm('Update Name?') == true){
+                    updateApprovedUserModal.modal('hide');
+                    loadingScreen.show();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'php/updateUserName.php',
+                        data:
+                        {
+                            requestId: globalProductId,
+                            first_name: userFirstNameEdit.val(),
+                            last_name: userLastNameEdit.val(),
+                        },
+                        success:function(response){
+                            userFirstNameEdit.val("");
+                            userLastNameEdit.val("");
+                            approvedUsersTable.children().remove();
+                            getApprovedUsers();
+                            loadingScreen.slideUp('fast');
+                        }
+                    });
+                }
+            }
+        });
+        userEmailUpdateBtn.click(function(){
+            if(userEmailEdit.val() == ""){
+                userEmailEdit.addClass('is-invalid');
+            }
+            if(userEmailEdit.val() != ""){
+                if(confirm('Update Email?') == true){
+                    updateApprovedUserModal.modal('hide');
+                    loadingScreen.show();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'php/updateUserEmail.php',
+                        data:
+                        {
+                            requestId: globalProductId,
+                            email: userEmailEdit.val(),
+                        },
+                        success:function(response){
+                            if(response == 'success'){
+                                userEmailEdit.val("");
+                                approvedUsersTable.children().remove();
+                                getApprovedUsers();
+                                loadingScreen.slideUp('fast');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        userContactNumberUpdateBtn.click(function(){
+            if(userContactNumberEdit.val() == "" || userContactNumberEdit.val().charAt(0) != '0' || userContactNumberEdit.val().charAt(1) != '9' || userContactNumberEdit.val().length != 11){
+                userContactNumberEdit.addClass('is-invalid');
+            }
+            if(userContactNumberEdit.val().charAt(0) == '0' && userContactNumberEdit.val().charAt(1) == '9' && userContactNumberEdit.val().length == 11){
+                if(confirm('update Contact Number?') == true){
+                    updateApprovedUserModal.modal('hide');
+                    loadingScreen.show();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'php/updateUserContactNumber.php',
+                        data:
+                        {
+                            requestId: globalProductId,
+                            contact_number: userContactNumberEdit.val(),
+                        },
+                        success:function(response){
+                            if(response == 'success'){
+                                userContactNumberEdit.val("");
+                                approvedUsersTable.children().remove();
+                                getApprovedUsers();
+                                loadingScreen.slideUp('fast');
+                            }
+                        }
+                    });
+                }
+            }
+        });
         
         function getApprovedUsers(){
             $.ajax({
@@ -49,11 +164,46 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.updated_at}</td>
                                 <td>
-                                    <button class="editApprovedUserBtn btn btn-outline-warning" value="${value.id}" data-bs-toggle="modal" data-bs-target="#viewOrderModal">Edit</button>
+                                    <button class="editApprovedUserBtn btn btn-outline-warning" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedUserModal">Update</button>
                                     <button class="terminateApprovedUserBtn btn btn-outline-danger" value="${value.id}">Terminate</button>
                                 </td>
                             </tr>
                         `);
+                    });
+                    var ediApprovedUserBtn = $('.editApprovedUserBtn');
+                    var terminateApprovedUserBtn = $('.terminateApprovedUserBtn');
+                    
+                    ediApprovedUserBtn.click(function(){
+                        globalProductId = $(this).val();
+                    });
+                    
+                    terminateApprovedUserBtn.click(function(){
+                        if(confirm('Terminate This Account?') == true){
+                            var thisBtn = $(this);
+                            loadingScreen.show();
+                            globalProductId = $(this).val();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/terminateApprovedUser.php',
+                                data:
+                                {
+                                    requestId: globalProductId,
+                                },
+                                success:function(response){
+                                    if(response == 'success'){
+                                        loadingScreen.slideUp('fast', function(){
+                                            alert('Account Terminated.');
+                                            thisBtn.parent().parent().remove();
+                                        });
+                                    }else{
+                                        loadingScreen.slideUp('fast', function(){
+                                            alert('Server Error!');
+                                        });
+                                    }
+                                }
+                            });
+                            
+                        }
                     });
                 }
             });
@@ -73,7 +223,7 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.created_at}</td>
                                 <td>
-                                    <button class="approveRequestBtn btn btn-outline-dark" value="${value.id}" data-bs-toggle="modal" data-bs-target="#viewOrderModal">Approve</button>
+                                    <button class="approveRequestBtn btn btn-outline-dark" value="${value.id}">Approve</button>
                                     <button class="declineRequestBtn btn btn-outline-warning" value="${value.id}">Decline</button>
                                 </td>
                             </tr>
@@ -121,7 +271,7 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
-                                            alert('Request Deleted');
+                                            alert('Request Deleted.');
                                             thisButton.parent().parent().remove();
                                         });
 
@@ -137,18 +287,172 @@
                 }
             });
         };
+        function getMechanics(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/getMechanics.php',
+                success:function(response){
+                    var data = JSON.parse(response);
+                    $(data).each(function(index,value){
+                        approvedMechanicsTable.append(`
+                            <tr>
+                                <td>${value.last_name}, ${value.first_name}</td>
+                                <td>${value.email}</td>
+                                <td>${value.contact_number}</td>
+                                <td>${value.created_at}</td>
+                                <td>
+                                    <button class="editApprovedMechanicBtn btn btn-outline-warning" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedMechanicModal">Update</button>
+                                    <button class="terminateApprovedMechanicBtn btn btn-outline-danger" value="${value.id}">Terminate</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                    var editApprovedMechanicBtn = $('.editApprovedMechanicBtn');
+                    var terminateApprovedMechanicBtn = $('.terminateApprovedMechanicBtn');
+                    
+                    terminateApprovedMechanicBtn.click(function(){
+                        if(confirm('Terminate Mechanic?') == true){
+                            globalProductId = $(this).val();
+                            var thisButton =$(this);
+                            loadingScreen.show();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/terminateApprovedMechanic.php',
+                                data:
+                                {
+                                    requestId: globalProductId,
+                                },
+                                success:function(response){
+                                    if(response == 'success'){
+                                        loadingScreen.slideUp('fast', function(){
+                                            thisButton.parent().parent().remove();
+                                            alert('Mechanic Terminated.');
+                                        })
+                                    }else{
+                                        loadingScreen.slideUp('fast', function(){
+                                            alert('Server Error!');
+                                        })
+                                    }
+                                }
+                            });
+                        }
+                    }); 
+                }
+            });
+        }
+        function getMechanicsRequest(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/getRequestMechanics.php',
+                success:function(response){
+                    console.log(response);
+                    var data = JSON.parse(response);
+                    $(data).each(function(index,value){
+                        requestMechanicsTable.append(`
+                            <tr>
+                                <td>${value.last_name}, ${value.first_name}</td>
+                                <td>${value.email}</td>
+                                <td>${value.contact_number}</td>
+                                <td>${value.created_at}</td>
+                                <td>
+                                    <button class="approveMechanicRequestBtn btn btn-outline-dark" value="${value.id}">Approve</button>
+                                    <button class="declineMechanicRequestBtn btn btn-outline-warning" value="${value.id}">Decline</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                    var approveMechanicRequestBtn = $('.approveMechanicRequestBtn');
+                    var declineMechanicRequestBtn = $('.declineMechanicRequestBtn');
+                    
+                    approveMechanicRequestBtn.click(function(){
+                        if(confirm('Approve This Request?') == true){
+                            globalProductId = $(this).val();
+                            var thisButton = $(this);
+                            loadingScreen.show();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/approveMechanicRequest.php',
+                                data:
+                                {
+                                    requestId: globalProductId,
+                                },
+                                success:function(response){
+                                    if(response == 'success'){
+                                        loadingScreen.slideUp('fast', function(){
+                                            thisButton.parent().parent().remove();
+                                            alert('Request Approved?');
+                                        });
+                                    }else{
+                                        loadingScreen.hide('fast', function(){
+                                            alert('Server Error!');
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    declineMechanicRequestBtn.click(function(){
+                        if(confirm('Decline Request?') == true){
+                            globalProductId = $(this).val();
+                            var thisButton = $(this);
+                            loadingScreen.show();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/declineMechanicRequest.php',
+                                data:
+                                {
+                                    requestId: globalProductId,
+                                },
+                                success:function(response){
+                                    if(response == 'success'){
+                                        loadingScreen.slideUp('fast', function(){
+                                            thisButton.parent().parent().remove();
+                                            alert('Request Deleted.');
+                                        });
+                                    }else{
+                                        loadingScreen.hide('fast', function(){
+                                            alert('Server Error!');
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
         getUserRequests();
         
+        navRequestMechanics.click(function(){
+            requestMechanicsTable.children().remove();
+            approvedUserSection.slideUp('fast');
+            userSection.slideUp('fast');
+            mechanicsSection.slideUp('fast');
+            requestMechanicsSection.slideDown('slow');
+            getMechanicsRequest();
+        });
+        navMechanics.click(function(){
+            approvedMechanicsTable.children().remove();
+            approvedUserSection.slideUp('fast');
+            userSection.slideUp('fast');
+            mechanicsSection.slideDown('slow');
+            requestMechanicsSection.slideUp('fast');
+            getMechanics();
+        })
         navAccountRequests.click(function(){
             userTable.children().remove();
             approvedUserSection.slideUp('fast');
+            mechanicsSection.slideUp('fast');
             userSection.slideDown('slow');
+            requestMechanicsSection.slideUp('fast');
             getUserRequests();
         });
         navApprovedAccounts.click(function(){
             approvedUsersTable.children().remove();
             userSection.slideUp('fast');
+            mechanicsSection.slideUp('fast');
             approvedUserSection.slideDown('slow');
+            requestMechanicsSection.slideUp('fast');
             getApprovedUsers();
         });
         
@@ -217,6 +521,14 @@
                 </button>
                 <div id="nav-menu" class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
+                      <li class="nav-item dropdown mt-2">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Mechanics</a>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#" id="navMechanics">Approved Mechanics</a></li>
+                              <li><hr class="dropdown-divider"></li>
+                              <li><a class="dropdown-item" href="#" id="navRequestMechanics">Request Mechanics</a></li>
+                            </ul>
+                       </li>
                        <li class="nav-item dropdown mt-2">
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Accounts</a>
                             <ul class="dropdown-menu">
@@ -288,7 +600,97 @@
                 </div>
             </div>
        </section>
+       <section id="mechanicsSection">
+            <div class="container">
+                <div class="card mt-5 rounded-5 shadow">
+                    <div class="card-header">
+                        <h4 class="fw-bold my-3 mx-5">Approved Mechanics:</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">E-mail Address</th>
+                                    <th scope="col">Contact Number</th>
+                                    <th scope="col">Date Approved</th>
+                                    <th scope="col">Operations</th>
+                                </thead>
+                                <tbody id="approvedMechanicsTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </section>
+       <section id="requestMechanicsSection">
+            <div class="container">
+                <div class="card mt-5 rounded-5 shadow">
+                    <div class="card-header">
+                        <h4 class="fw-bold my-3 mx-5">Request Mechanics:</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">E-mail Address</th>
+                                    <th scope="col">Contact Number</th>
+                                    <th scope="col">Date Approved</th>
+                                    <th scope="col">Operations</th>
+                                </thead>
+                                <tbody id="requestMechanicsTable">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </section>
    </main>
    <footer></footer>
+   <div class="modal fade" id="updateApprovedUserModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary">
+                    <div class="modal-title justify-content-between">
+                        <h4>Update Account Information</h4>
+                    </div>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div style="display: flex;">
+                            <div>
+                                <input style="width: 100%;margin-right: 100%;" type="text" class="form-control mt-3" id="userFirstNameEdit" placeholder="First Name">
+                                <div class="invalid-feedback">Please Fill up this field</div>
+                            </div>
+                            <div>
+                                <span style="margin: 10px"></span>
+                            </div>
+                            <div>
+                                <input style="width: 100%;margin-right: 100%;" type="text" class="form-control mt-3" id="userLastNameEdit" placeholder="Last Name">
+                                <div class="invalid-feedback">Please Fill up this field</div>
+                            </div>
+                        </div>
+                        <button id="userNameUpdateBtn" class="btn btn-md btn-success mt-2">Update Name</button>
+                    </div>
+                    <hr>
+                    <div>
+                        <input type="Email" class="form-control mt-3" id="userEmailEdit" placeholder="Email Address">
+                        <div class="invalid-feedback">Please Fill up this field</div>
+                        <button id="userEmailUpdateBtn" class="btn btn-md btn-success mt-2">Update Email</button>
+                    </div>
+                    <hr>
+                    <div>
+                        <input type="number" class="form-control mt-3" id="userContactNumberEdit" placeholder="Contact Number">
+                        <div class="invalid-feedback">Invalid Contact Number</div>
+                        <button id="userContactNumberUpdateBtn" class="btn btn-md btn-success mt-2">Update Contact Number</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
