@@ -75,6 +75,39 @@ class AuthController extends Controller
         ,200);
     }
 
+    public function registerOwner(Request $request){
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'contact_number' => 'required',
+            'password' => 'required',
+        ]);
+
+        $checkUser = User::where('contact_number', $request['contact_number'])->first();
+
+        if($checkUser){
+            return response([
+                'message' => 'contact number already exists'
+            ], 401);
+        }
+
+
+        $user = User::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'contact_number' => $request['contact_number'],
+            'password' => bcrypt($request['password']),
+            'user_type' => 'owner',
+            'email' => $request['email'],
+            'approval_status' => 'Pending',
+        ]);
+
+        return response([
+            'message' => 'registered'
+        ]
+        ,200);
+    }
+
     public function login(Request $request){
         $request->validate([
             'contact_number' => 'required',
