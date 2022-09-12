@@ -26,14 +26,14 @@
             });
 
             adminLogIn.click(function(){
-                loadingScreen.show();
                 if(email.val() == ""){
                     email.addClass('is-invalid');
                 }
                 if(password.val() == ""){
                     password.addClass('is-invalid');
                 }
-                else{
+                if (email.val() != "" && password.val() != ""){
+                    loadingScreen.show();
                     $.ajax({
                         type: 'POST',
                         url: 'php/login.php',
@@ -49,7 +49,7 @@
                             }
                             else{
                                 alert("This Account does not exist!");
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.hide();
                             }
                         }
                     });
