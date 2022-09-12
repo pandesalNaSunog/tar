@@ -10,12 +10,16 @@
                 $id = $row['id'];
                 $firstName = $row['first_name'];
                 $lastName = $row['last_name'];
+                $email = $row['email'];
                 $contactNumber = $row['contact_number'];
+                $createdAt = $row['created_at'];
                 $productArray[] = array(
                     'id' => $id,
                     'first_name' => $firstName,
                     'last_name' => $lastName,
+                    'email' => $email,
                     'contact_number' => $contactNumber,
+                    'created_at' => $createdAt,
                 );
             }
             echo json_encode($productArray);
