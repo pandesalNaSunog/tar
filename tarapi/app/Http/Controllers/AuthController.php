@@ -114,7 +114,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('contact_number', $request['contact_number'])->first();
+        $user = User::where('contact_number', $request['contact_number'])->orWhere('email', $request['contact_number'])->first();
 
         if(!$user || !Hash::check($request['password'], $user->password)){
             return response([

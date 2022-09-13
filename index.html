@@ -18,16 +18,13 @@
             var password = $('#password');
             var loadingScreen = $('.loadingScreen');
             var downloadBtn = $('#downloadBtn');
-            
-            downloadBtn.click(function(){
-                loadingScreen.show();
-            });
         });
     </script>
 </head>
 <style>
     body{
-        min-height: 100vh;background: rgb(14,32,52);background: linear-gradient(34deg, rgba(14,32,52,1) 10%, rgba(44,56,71,1) 14%, rgba(53,63,77,1) 20%, rgba(12,38,87,1) 29%, rgba(2,32,89,1) 46%, rgba(99,129,255,1) 53%, rgba(73,99,192,1) 64%, rgba(16,33,52,1) 73%, rgba(58,68,81,1) 100%);
+        min-height: 100vh;
+        background: rgb(14,32,52);background: linear-gradient(34deg, rgba(14,32,52,1) 10%, rgba(44,56,71,1) 14%, rgba(53,63,77,1) 20%, rgba(12,38,87,1) 29%, rgba(2,32,89,1) 46%, rgba(99,129,255,1) 53%, rgba(73,99,192,1) 64%, rgba(16,33,52,1) 73%, rgba(58,68,81,1) 100%);
     }
     #loader{
         animation: loader 1.3s;
@@ -77,13 +74,13 @@ background: linear-gradient(0deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.35) 13%, rgb
                     <img src="logo.png" alt="TAR logo" class="img-fluid" style="width: auto; max-height: 300px">
                 </div>
                 <div class="container">
-                    <button id="downloadBtn" type="button" class="btn positive-btn" style="font-size: 150%;">
+                    <a href="app/tar.apk" id="downloadBtn" type="button" class="btn positive-btn" style="font-size: 150%;" download>
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                           <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
                           <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
                         </svg>
                     DOWNLOAD
-                  </button>
+                    </a>
                 </div>
             </div>
         </div>
