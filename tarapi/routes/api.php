@@ -18,7 +18,7 @@ Route::post('/register',[AuthController::class, 'register']);
 Route::post('/register-mechanic', [AuthController::class, 'registerMechanic']);
 Route::post('/register-owner', [AuthController::class, 'registerOwner']);
 Route::get('/mechanics', [ShopMechanicController::class, 'getMechanics']);
-
+Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/book', [ShopMechanicController::class, 'book']);
 });
