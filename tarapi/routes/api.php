@@ -21,6 +21,7 @@ Route::get('/mechanics', [ShopMechanicController::class, 'getMechanics']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/book', [ShopMechanicController::class, 'book']);
+    Route::get('/profile', [AuthController::class, 'profile']);
 });
 
 

@@ -129,4 +129,13 @@ class AuthController extends Controller
             'token' => $token
         ], 200);
     }
+
+    public function profile(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        return response($user, 200);
+    }
 }
