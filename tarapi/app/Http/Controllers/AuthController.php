@@ -116,10 +116,17 @@ class AuthController extends Controller
 
         $user = User::where('contact_number', $request['contact_number'])->first();
 
-        if(!$user){
+        if(!$user || !Hash::check($request['password'], $user->password)){
             return response([
                 'message' => 'invalid contact and password'
             ], 401);
         }
+
+        $token = $user->createToken('myAppToken')->plainTextToken;
+
+        return response([
+            'user' => $user,
+            'token' => $token
+        ], 200);
     }
 }

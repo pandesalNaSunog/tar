@@ -26,13 +26,13 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
         $booking = Booking::create([
             'customer_id' => $id,
-            'shop_mechanic_id' => $request['shope_mechanic_id'],
+            'shop_mechanic_id' => $request['shop_mechanic_id'],
             'lat' => $request['lat'],
             'long' => $request['long'],
         ]);
 
         return response([
             'message' => 'successfully booked'
-        ]);
+        ], 200);
     }
 }
