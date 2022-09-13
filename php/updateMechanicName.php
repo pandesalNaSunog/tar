@@ -7,8 +7,9 @@
                 echo $con->connect_error;
             }else{
                 $requestId = $_POST['requestId'];
-                $email = htmlspecialchars($_POST['email']);
-                $query = "UPDATE `users` SET `email`='$email' WHERE id='$requestId'";
+                $firstName = htmlspecialchars($_POST['first_name']);
+                $lastName = htmlspecialchars($_POST['last_name']);
+                $query = "UPDATE `users` SET `first_name`='$firstName', `last_name`='$lastName' WHERE id='$requestId'";
                 $con->query($query) or die($con->error);
                 echo 'success';
             }

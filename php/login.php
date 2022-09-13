@@ -5,8 +5,8 @@
         $con = connect();
     
         if(isset($_POST)){
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $email = htmlspecialchars($_POST['email']);
+            $password = htmlspecialchars($_POST['password']);
     
             $query = "SELECT * FROM users WHERE email = '$email' AND user_type = 'Admin'";
             $user = $con->query($query) or die($con->error);

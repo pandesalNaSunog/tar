@@ -2,7 +2,7 @@
     if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'){
         include('connection.php');
         $con = connect();
-        $query = "SELECT * FROM `users` where user_type = 'Mechanic' AND approval_status='Approved'";
+        $query = "SELECT * FROM `users` where user_type = 'Owner' AND approval_status='Approved'";
         $result = mysqli_query($con,$query);
         $productArray = array();
         if($result){
