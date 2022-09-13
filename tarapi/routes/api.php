@@ -17,5 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register',[AuthController::class, 'register']);
 Route::post('/register-mechanic', [AuthController::class, 'registerMechanic']);
 Route::post('/register-owner', [AuthController::class, 'registerOwner']);
+Route::get('/mechanics', [ShopMechanicController::class, 'getMechanics']);
 
 
