@@ -71,6 +71,25 @@
             transform: rotate(360deg);
         }
     }
+    .positive-btn{
+        background-color: darkblue;
+        color: white;
+        transition-duration: 0.2s;
+    }
+    .positive-btn:hover{
+        background-color: blue;
+        color: white;
+    }
+    .negative-btn{
+        background-color: white;
+        color: darkblue;
+        border-color: darkblue;
+        transition-duration: 0.2s;
+    }
+    .negative-btn:hover{
+        background-color: blue;
+        color: white;
+    }
 </style>
 <body class="bg-secondary">
    <div class="loadingScreen" style="position: absolute;z-index: 99;width: 100%;height: 100vh;background-color: rgba(0,0,0,0.5);display: flex;align-items: center;justify-content: center;">
@@ -93,7 +112,7 @@
                                 <input type="password" placeholder="Password" class="form-control rounded-pill mt-3" id="password">
                                 <div class="invalid-feedback bg-light">Please fill this input!</div>
                             </div>
-                            <button class="btn-outline-success btn mt-3 px-5" id="adminLogIn">Log-in</button>
+                            <button class="btn mt-3 px-5 positive-btn" id="adminLogIn">Log-in</button>
                         </div>
                     </div>
                 </div>

@@ -70,6 +70,13 @@
         var ownerEmailUpdateBtn = $('#ownerEmailUpdateBtn');
         var ownerContactNumberUpdateBtn = $('#ownerContactNumberUpdateBtn');
         var updateApprovedShopOwnerModal = $('#updateApprovedShopOwnerModal');
+        var badgeSO = $('#badgeSO');
+        var inboxSO = 0;
+        var badgeM = $('#badgeM');
+        var inboxM = 0;
+        var badgeU = $('#badgeU');
+        var inboxU = 0;
+        
         
         ownerFirstNameEdit.on('keydown',function(){
             $(this).removeClass('is-invalid');
@@ -428,8 +435,8 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.updated_at}</td>
                                 <td>
-                                    <button class="editApprovedUserBtn btn btn-outline-warning" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedUserModal">Update</button>
-                                    <button class="terminateApprovedUserBtn btn btn-outline-danger" value="${value.id}">Terminate</button>
+                                    <button class="editApprovedUserBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedUserModal">Update</button>
+                                    <button class="terminateApprovedUserBtn btn negative-btn" value="${value.id}">Terminate</button>
                                 </td>
                             </tr>
                         `);
@@ -487,8 +494,8 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.created_at}</td>
                                 <td>
-                                    <button class="approveRequestBtn btn btn-outline-dark" value="${value.id}">Approve</button>
-                                    <button class="declineRequestBtn btn btn-outline-warning" value="${value.id}">Decline</button>
+                                    <button class="approveRequestBtn btn positive-btn" value="${value.id}">Approve</button>
+                                    <button class="declineRequestBtn btn negative-btn" value="${value.id}">Decline</button>
                                 </td>
                             </tr>
                         `);
@@ -511,8 +518,19 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
+                                            var counter = parseInt(badgeU.text());
+                                            counter--;
+                                            if(counter != 0){
+                                                badgeU.text(counter);
+                                            }else{
+                                                badgeU.text("");
+                                            }
                                             alert('Request Approved.');
                                             thisButton.parent().parent().remove();
+                                        });
+                                    }else{
+                                        loadingScreen.hide('fast', function(){
+                                            alert('Server Error!');
                                         });
                                     }
                                 }
@@ -535,10 +553,16 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
+                                            var counter = parseInt(badgeU.text());
+                                            counter--;
+                                            if(counter != 0){
+                                                badgeU.text(counter);
+                                            }else{
+                                                badgeU.text("");
+                                            }
                                             alert('Request Deleted.');
                                             thisButton.parent().parent().remove();
                                         });
-
                                     }else{
                                         loadingScreen.hide('fast', function(){
                                             alert('Server Error!');
@@ -565,8 +589,8 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.updated_at}</td>
                                 <td>
-                                    <button class="editApprovedMechanicBtn btn btn-outline-warning" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedMechanicsModal">Update</button>
-                                    <button class="terminateApprovedMechanicBtn btn btn-outline-danger" value="${value.id}">Terminate</button>
+                                    <button class="editApprovedMechanicBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedMechanicsModal">Update</button>
+                                    <button class="terminateApprovedMechanicBtn btn negative-btn" value="${value.id}">Terminate</button>
                                 </td>
                             </tr>
                         `);
@@ -623,8 +647,8 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.created_at}</td>
                                 <td>
-                                    <button class="approveMechanicRequestBtn btn btn-outline-dark" value="${value.id}">Approve</button>
-                                    <button class="declineMechanicRequestBtn btn btn-outline-warning" value="${value.id}">Decline</button>
+                                    <button class="approveMechanicRequestBtn btn positive-btn" value="${value.id}">Approve</button>
+                                    <button class="declineMechanicRequestBtn btn negative-btn" value="${value.id}">Decline</button>
                                 </td>
                             </tr>
                         `);
@@ -647,6 +671,13 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
+                                            var counter = parseInt(badgeM.text());
+                                            counter--;
+                                            if(counter != 0){
+                                                badgeM.text(counter);
+                                            }else{
+                                                badgeM.text("");
+                                            }
                                             thisButton.parent().parent().remove();
                                             alert('Request Approved.');
                                         });
@@ -674,6 +705,13 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
+                                            var counter = parseInt(badgeM.text());
+                                            counter--;
+                                            if(counter != 0){
+                                                badgeM.text(counter);
+                                            }else{
+                                                badgeM.text("");
+                                            }
                                             thisButton.parent().parent().remove();
                                             alert('Request Deleted.');
                                         });
@@ -703,8 +741,8 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.updated_at}</td>
                                 <td>
-                                    <button class="editApprovedShopOwnerBtn btn btn-outline-warning" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedShopOwnerModal">Update</button>
-                                    <button class="terminateApprovedShopOwnerBtn btn btn-outline-danger" value="${value.id}">Terminate</button>
+                                    <button class="editApprovedShopOwnerBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedShopOwnerModal">Update</button>
+                                    <button class="terminateApprovedShopOwnerBtn btn negative-btn" value="${value.id}">Terminate</button>
                                 </td>
                             </tr>
                         `);
@@ -759,8 +797,8 @@
                                 <td>${value.contact_number}</td>
                                 <td>${value.created_at}</td>
                                 <td>
-                                    <button class="approveShopOwnerRequestBtn btn btn-outline-dark" value="${value.id}">Approve</button>
-                                    <button class="declineShopOwnerRequestBtn btn btn-outline-warning" value="${value.id}">Decline</button>
+                                    <button class="approveShopOwnerRequestBtn btn positive-btn" value="${value.id}">Approve</button>
+                                    <button class="declineShopOwnerRequestBtn btn negative-btn" value="${value.id}">Decline</button>
                                 </td>
                             </tr>
                         `);
@@ -783,6 +821,13 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
+                                            var counter = parseInt(badgeSO.text());
+                                            counter--;
+                                            if(counter != 0){
+                                                badgeSO.text(counter);
+                                            }else{
+                                                badgeSO.text("");
+                                            }
                                             thisButton.parent().parent().remove();
                                             alert('Request Approved.');
                                         });
@@ -810,6 +855,13 @@
                                 success:function(response){
                                     if(response == 'success'){
                                         loadingScreen.slideUp('fast', function(){
+                                            var counter = parseInt(badgeSO.text());
+                                            counter--;
+                                            if(counter != 0){
+                                                badgeSO.text(counter);
+                                            }else{
+                                                badgeSO.text("");
+                                            }
                                             thisButton.parent().parent().remove();
                                             alert('Request Deleted.');
                                         });
@@ -824,8 +876,47 @@
                     });
                 }
             });
+        };
+        function popperso(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/SOcounter.php',
+                success:function(response){
+                    if(response != 0){
+                        inboxSO = response;
+                        badgeSO.text(inboxSO);
+                    }
+                }
+            });
+        }
+        function popperm(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/Mcounter.php',
+                success:function(response){
+                    if(response != 0){
+                        inboxM = response;
+                        badgeM.text(inboxM);
+                    }
+                }
+            });
+        }
+        function popperu(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/Ucounter.php',
+                success:function(response){
+                    if(response != 0){
+                        inboxU = response;
+                        badgeU.text(inboxU);
+                    }
+                }
+            });
         }
         getUserRequests();
+        popperso();
+        popperm();
+        popperu();
         
         navShopOwners.click(function(){
             approvedUserSection.slideUp('fast');
@@ -846,6 +937,7 @@
             shopOwnersRequestSection.slideDown('slow');
             shopOwnersSection.slideUp('fast');
             getShopOwnersRequests();
+            popperso();
         });
         navRequestMechanics.click(function(){
             requestMechanicsTable.children().remove();
@@ -856,6 +948,7 @@
             shopOwnersSection.slideUp('fast');
             requestMechanicsSection.slideDown('slow');
             getMechanicsRequest();
+            popperm();
         });
         navMechanics.click(function(){
             approvedMechanicsTable.children().remove();
@@ -876,6 +969,7 @@
             shopOwnersRequestSection.slideUp('fast');
             shopOwnersSection.slideUp('fast');
             getUserRequests();
+            popperu();
         });
         navApprovedAccounts.click(function(){
             approvedUsersTable.children().remove();
@@ -934,18 +1028,39 @@
     main{
         margin-bottom: 50px;
     }
+    .positive-btn{
+        background-color: darkblue;
+        color: white;
+        transition-duration: 0.2s;
+    }
+    .positive-btn:hover{
+        background-color: blue;
+        color: white;
+    }
+    .negative-btn{
+        background-color: white;
+        color: darkblue;
+        border-color: darkblue;
+        transition-duration: 0.2s;
+    }
+    .negative-btn:hover{
+        background-color: blue;
+        color: white;
+    }.badge{
+        font-size: 8px;
+    }
 </style>
 <body>
    <!-- loading screen -->
     <div class="loadingScreen" style="position: absolute;z-index: 99;width: 100%;height: 100vh;background-color: rgba(0,0,0,0.5);display: flex;align-items: center;justify-content: center;">
        <img id="loader" src="logo.png" alt="TAR logo" class="img-fluid" style="width: auto; max-height: 50px">
    </div>
-   <header class="sticky-top bg-primary shadow-lg" style="z-index: 90;border-bottom: solid 2.5px rgba(0,0,0,0.8);">
+   <header class="sticky-top shadow-lg" style="z-index: 90;border-bottom: solid 2.5px rgba(0,0,0,0.8);background-color: darkblue;">
        <nav class="navbar navbar-expand-lg navbar-dark py-0">
             <div class="container my-0">
                 <div class="navbar-brand m-0">
-                    <h1 style="font-family: fantasy;color: black;">
-                        <img src="logo.png" height="70px" width="70px" alt="">Tap And Repair<sub style="color:white;">ONLINE</sub>
+                    <h1 style="font-family: fantasy;color: white;">
+                        <img src="logo.png" height="70px" width="70px" alt="">Tap And Repair
                     </h1>
                 </div>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav-menu">
@@ -954,7 +1069,8 @@
                 <div id="nav-menu" class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
                      <li class="nav-item dropdown mt-2">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="shopicon.png"  height="16px" width="16px" alt="">Shop Owners</a>
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><sup class="badge text-light rounded-pill m-0 p-1" id="badgeSO" style="background-color: red;"></sup><img src="shopicon.png"  height="16px" width="16px" alt="">Shop Owners
+                            </a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#" id="navShopOwners">Approved Shop Owners</a></li>
                               <li><hr class="dropdown-divider"></li>
@@ -962,7 +1078,7 @@
                             </ul>
                        </li>
                       <li class="nav-item dropdown mt-2">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="smallwrench.png"  height="16px" width="16px" alt="">Mechanics</a>
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><sup class="badge text-light rounded-pill m-0 p-1" id="badgeM" style="background-color: red;"></sup><img src="smallwrench.png"  height="16px" width="16px" alt="">Mechanics</a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#" id="navMechanics">Approved Mechanics</a></li>
                               <li><hr class="dropdown-divider"></li>
@@ -970,7 +1086,7 @@
                             </ul>
                        </li>
                        <li class="nav-item dropdown mt-2">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="person.svg"alt=""> Accounts</a>
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><sup class="badge text-light rounded-pill m-0 p-1" id="badgeU" style="background-color: red;"></sup><img src="person.svg"alt="">Accounts</a>
                             <ul class="dropdown-menu">
                               <li><a class="dropdown-item" href="#" id="navApprovedAccounts">Approved Accounts</a></li>
                               <li><hr class="dropdown-divider"></li>
@@ -979,7 +1095,7 @@
                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link mx-3">
-                                <button class="btn" id="logOut">
+                                <button class="btn text-light" id="logOut">
                                     <img src="door-open.svg" alt="logout">Log Out
                                 </button>
                             </a>
