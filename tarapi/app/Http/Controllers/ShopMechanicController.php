@@ -55,7 +55,7 @@ class ShopMechanicController extends Controller
         ]);
 
         return response([
-            'message' => 'successfully booked'
+            'booking_id' => $booking->id
         ], 200);
     }
 
