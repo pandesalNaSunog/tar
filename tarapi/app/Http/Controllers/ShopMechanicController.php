@@ -22,8 +22,26 @@ class ShopMechanicController extends Controller
             ], 401);
         }
         $mechanics = User::where('user_type', 'mechanic')->where('status', 'idle')->get();
+        $response = array();
+        foreach($mechanics as $mechanicItem){
+            $mechanicId = $mechanicItem->id;
+            $ratingItems = 0;
+            $totalRatings = 0;
+            $ratings = Rating::where('mechanic_shop_id', $mechanicId)->get();
+            foreach($ratings as $ratingItem){
+                $totalRatings += $ratingItem->rating;
+                $ratingItems++;
+            }
 
-        return response($mechanics, 200);
+            $averageRating = $totalRatings / $ratingItems;
+
+            $response[] = array(
+                'mechanic' => $mechanicItem,
+                'average_rating' => $averageRating
+            );
+        }
+
+        return response($response, 200);
     }
 
     public function book(Request $request){
