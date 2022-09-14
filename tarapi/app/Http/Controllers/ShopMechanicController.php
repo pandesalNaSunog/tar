@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Booking;
 use Laravel\Sanctum;
+use App\Models\Rating;
 use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
@@ -55,5 +56,22 @@ class ShopMechanicController extends Controller
         return response([
             'message' => 'successfully booked'
         ], 200);
+    }
+
+    public function submitRating(Request $request){
+        $request->validate([
+            'mechanic_shop_id' => 'required',
+            'rating' => 'required',
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+        $rating = Rating::create([
+            'user_id' => $id,
+            'mechanic_shop_id' => $request['mechanic_shop_id'],
+            'rating' => $request['rating']
+        ]);
+
+        return response($rating,200);
     }
 }
