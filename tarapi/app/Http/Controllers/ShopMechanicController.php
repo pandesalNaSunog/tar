@@ -18,14 +18,25 @@ class ShopMechanicController extends Controller
     public function book(Request $request){
         $request->validate([
             'shop_mechanic_id' => 'required',
+            'vehicle_type' => 'required',
+            'service' => 'required',
             'lat' => 'required',
             'long' => 'required'
         ]);
 
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
+
+        $checkBooking = Booking::where('customer_id', $id)->first();
+        if($checkBooking){
+            return response([
+                'message' => 'you are currently booked'
+            ], 401);
+        }
         $booking = Booking::create([
             'customer_id' => $id,
+            'vehicle_type' => $request['vehicle_type'],
+            'service' => $request['service'],
             'shop_mechanic_id' => $request['shop_mechanic_id'],
             'lat' => $request['lat'],
             'long' => $request['long'],

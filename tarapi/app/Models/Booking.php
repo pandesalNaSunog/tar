@@ -12,6 +12,8 @@ class Booking extends Model
     protected $fillable = [
         'customer_id',
         'shop_mechanic_id',
+        'service',
+        'vehicle_type',
         'long',
         'lat'
     ];
