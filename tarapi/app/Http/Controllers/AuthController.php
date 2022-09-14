@@ -139,10 +139,26 @@ class AuthController extends Controller
         $id = $token->tokenable->id;
         $user = User::where('id', $id)->first(); 
         $booking = Booking::where('customer_id', $id)->get();
+        $bookingResponse = array();
+        foreach($booking as $bookingItem){
+            $bookingId = $bookingItem->id;
+            $mechanicOrShopId = $bookingItem->shop_mechanic_id;
+
+            $mechanic = User::where('id', $mechanicOrShopId)->first();
+
+            $name = $mechanic->last_name . "," . $mechanic->first_name;
+            $status = $bookingItem->status;
+
+            $bookingResponse[] = array(
+                'booking_id' => $bookingId,
+                'name' => $name,
+                'status' => $status
+            );
+        }
 
         return response([
             'user' => $user,
-            'bookings' => $booking
+            'bookings' => $bookingResponse
         ], 200);
     }
 }
