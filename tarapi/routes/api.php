@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/mechanics', [ShopMechanicController::class, 'getMechanics']);
     Route::post('/rate', [ShopMechanicController::class, 'submitRating']);
     Route::post('/accept-booking', [ShopMechanicController::class, 'acceptBooking']);
+    Route::post('/check-booking-status', [ShopMechanicController::class, 'checkBookingStatus']);
 });
 
 

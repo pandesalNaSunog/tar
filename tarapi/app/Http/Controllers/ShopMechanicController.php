@@ -101,4 +101,19 @@ class ShopMechanicController extends Controller
 
         return response($booking, 200);
     }
+
+    public function checkBookingStatus(Request $request){
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
+
+        return response([
+            'status' => $booking->status
+        ], 200);
+    }
 }
