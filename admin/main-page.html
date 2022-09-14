@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tap And Repair</title>
     <link rel="stylesheet" href="bootstrap.css">
     <script src="bootstrap.js"></script>
@@ -426,55 +428,57 @@
                 type: 'POST',
                 url: 'php/getApprovedUsers.php',
                 success:function(response){
-                    var data = JSON.parse(response);
-                    $(data).each(function(index,value){
-                        approvedUsersTable.append(`
-                            <tr>
-                                <td>${value.last_name}, ${value.first_name}</td>
-                                <td>${value.email}</td>
-                                <td>${value.contact_number}</td>
-                                <td>${value.updated_at}</td>
-                                <td>
-                                    <button class="editApprovedUserBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedUserModal">Update</button>
-                                    <button class="terminateApprovedUserBtn btn negative-btn" value="${value.id}">Terminate</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                    var ediApprovedUserBtn = $('.editApprovedUserBtn');
-                    var terminateApprovedUserBtn = $('.terminateApprovedUserBtn');
-                    
-                    ediApprovedUserBtn.click(function(){
-                        globalProductId = $(this).val();
-                    });
-                    
-                    terminateApprovedUserBtn.click(function(){
-                        if(confirm('Terminate This Account?') == true){
-                            var thisBtn = $(this);
-                            loadingScreen.show();
+                    loadingScreen.slideUp('fast',function(){
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            approvedUsersTable.append(`
+                                <tr>
+                                    <td>${value.last_name}, ${value.first_name}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.contact_number}</td>
+                                    <td>${value.updated_at}</td>
+                                    <td>
+                                        <button class="editApprovedUserBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedUserModal">Update</button>
+                                        <button class="terminateApprovedUserBtn btn negative-btn" value="${value.id}">Terminate</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                        var ediApprovedUserBtn = $('.editApprovedUserBtn');
+                        var terminateApprovedUserBtn = $('.terminateApprovedUserBtn');
+
+                        ediApprovedUserBtn.click(function(){
                             globalProductId = $(this).val();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/terminateApprovedUser.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            alert('Account Terminated.');
-                                            thisBtn.parent().parent().remove();
-                                        });
-                                    }else{
-                                        loadingScreen.slideUp('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                        });
+
+                        terminateApprovedUserBtn.click(function(){
+                            if(confirm('Terminate This Account?') == true){
+                                var thisBtn = $(this);
+                                loadingScreen.show();
+                                globalProductId = $(this).val();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/terminateApprovedUser.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                alert('Account Terminated.');
+                                                thisBtn.parent().parent().remove();
+                                            });
+                                        }else{
+                                            loadingScreen.slideUp('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-                            });
-                            
-                        }
+                                });
+
+                            }
+                        });
                     });
                 }
             });
@@ -485,92 +489,94 @@
                 type: 'POST',
                 url: 'php/getUsers.php',
                 success: function(response){
-                    var data = JSON.parse(response);
-                    $(data).each(function(index,value){
-                        userTable.append(`
-                            <tr>
-                                <td>${value.last_name}, ${value.first_name}</td>
-                                <td>${value.email}</td>
-                                <td>${value.contact_number}</td>
-                                <td>${value.created_at}</td>
-                                <td>
-                                    <button class="approveRequestBtn btn positive-btn" value="${value.id}">Approve</button>
-                                    <button class="declineRequestBtn btn negative-btn" value="${value.id}">Decline</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                    var approveRequestBtn = $('.approveRequestBtn');
-                    var declineRequestBtn = $('.declineRequestBtn');
+                    loadingScreen.slideUp('fast',function(){
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            userTable.append(`
+                                <tr>
+                                    <td>${value.last_name}, ${value.first_name}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.contact_number}</td>
+                                    <td>${value.created_at}</td>
+                                    <td>
+                                        <button class="approveRequestBtn btn positive-btn" value="${value.id}">Approve</button>
+                                        <button class="declineRequestBtn btn negative-btn" value="${value.id}">Decline</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                        var approveRequestBtn = $('.approveRequestBtn');
+                        var declineRequestBtn = $('.declineRequestBtn');
 
-                    approveRequestBtn.click(function(){
-                        if(confirm('Approve this Request?') == true){
-                            var thisButton = $(this);
+                        approveRequestBtn.click(function(){
+                            if(confirm('Approve this Request?') == true){
+                                var thisButton = $(this);
+                                globalProductId = $(this).val();
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/approveRequest.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request Approved.');
+                                                thisButton.parent().parent().remove();
+                                            });
+                                        }else{
+                                            loadingScreen.hide('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
+                                    }
+
+                                });
+                            }
+                        });
+                        declineRequestBtn.click(function(){
                             globalProductId = $(this).val();
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/approveRequest.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            var counter = parseInt(badgeU.text());
-                                            counter--;
-                                            if(counter != 0){
-                                                badgeU.text(counter);
-                                            }else{
-                                                badgeU.text("");
-                                            }
-                                            alert('Request Approved.');
-                                            thisButton.parent().parent().remove();
-                                        });
-                                    }else{
-                                        loadingScreen.hide('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                            var thisButton = $(this);
+                            if(confirm('Decline Request?') == true){
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/declineRequest.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request Deleted.');
+                                                thisButton.parent().parent().remove();
+                                            });
+                                        }else{
+                                            loadingScreen.hide('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-
-                            });
-                        }
-                    });
-                    declineRequestBtn.click(function(){
-                        globalProductId = $(this).val();
-                        var thisButton = $(this);
-                        if(confirm('Decline Request?') == true){
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/declineRequest.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            var counter = parseInt(badgeU.text());
-                                            counter--;
-                                            if(counter != 0){
-                                                badgeU.text(counter);
-                                            }else{
-                                                badgeU.text("");
-                                            }
-                                            alert('Request Deleted.');
-                                            thisButton.parent().parent().remove();
-                                        });
-                                    }else{
-                                        loadingScreen.hide('fast', function(){
-                                            alert('Server Error!');
-                                        });
-                                    }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -580,55 +586,57 @@
                 type: 'POST',
                 url: 'php/getMechanics.php',
                 success:function(response){
-                    var data = JSON.parse(response);
-                    $(data).each(function(index,value){
-                        approvedMechanicsTable.append(`
-                            <tr>
-                                <td>${value.last_name}, ${value.first_name}</td>
-                                <td>${value.email}</td>
-                                <td>${value.contact_number}</td>
-                                <td>${value.updated_at}</td>
-                                <td>
-                                    <button class="editApprovedMechanicBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedMechanicsModal">Update</button>
-                                    <button class="terminateApprovedMechanicBtn btn negative-btn" value="${value.id}">Terminate</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                    var editApprovedMechanicBtn = $('.editApprovedMechanicBtn');
-                    var terminateApprovedMechanicBtn = $('.terminateApprovedMechanicBtn');
-                    
-                    editApprovedMechanicBtn.click(function(){
-                        globalProductId = $(this).val();
-                    });
-                    
-                    terminateApprovedMechanicBtn.click(function(){
-                        if(confirm('Terminate Mechanic?') == true){
+                    loadingScreen.slideUp('fast',function(){
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            approvedMechanicsTable.append(`
+                                <tr>
+                                    <td>${value.last_name}, ${value.first_name}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.contact_number}</td>
+                                    <td>${value.updated_at}</td>
+                                    <td>
+                                        <button class="editApprovedMechanicBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedMechanicsModal">Update</button>
+                                        <button class="terminateApprovedMechanicBtn btn negative-btn" value="${value.id}">Terminate</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                        var editApprovedMechanicBtn = $('.editApprovedMechanicBtn');
+                        var terminateApprovedMechanicBtn = $('.terminateApprovedMechanicBtn');
+
+                        editApprovedMechanicBtn.click(function(){
                             globalProductId = $(this).val();
-                            var thisButton =$(this);
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/terminateApprovedMechanic.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            thisButton.parent().parent().remove();
-                                            alert('Mechanic Terminated.');
-                                        })
-                                    }else{
-                                        loadingScreen.slideUp('fast', function(){
-                                            alert('Server Error!');
-                                        })
+                        });
+
+                        terminateApprovedMechanicBtn.click(function(){
+                            if(confirm('Terminate Mechanic?') == true){
+                                globalProductId = $(this).val();
+                                var thisButton =$(this);
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/terminateApprovedMechanic.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                thisButton.parent().parent().remove();
+                                                alert('Mechanic Terminated.');
+                                            })
+                                        }else{
+                                            loadingScreen.slideUp('fast', function(){
+                                                alert('Server Error!');
+                                            })
+                                        }
                                     }
-                                }
-                            });
-                        }
-                    }); 
+                                });
+                            }
+                        }); 
+                    });
                 }
             });
         }
@@ -637,91 +645,93 @@
                 type: 'POST',
                 url: 'php/getRequestMechanics.php',
                 success:function(response){
-                    var data = JSON.parse(response);
-                    $(data).each(function(index,value){
-                        requestMechanicsTable.append(`
-                            <tr>
-                                <td>${value.last_name}, ${value.first_name}</td>
-                                <td>${value.email}</td>
-                                <td>${value.contact_number}</td>
-                                <td>${value.created_at}</td>
-                                <td>
-                                    <button class="approveMechanicRequestBtn btn positive-btn" value="${value.id}">Approve</button>
-                                    <button class="declineMechanicRequestBtn btn negative-btn" value="${value.id}">Decline</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                    var approveMechanicRequestBtn = $('.approveMechanicRequestBtn');
-                    var declineMechanicRequestBtn = $('.declineMechanicRequestBtn');
-                    
-                    approveMechanicRequestBtn.click(function(){
-                        if(confirm('Approve This Request?') == true){
-                            globalProductId = $(this).val();
-                            var thisButton = $(this);
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/approveMechanicRequest.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            var counter = parseInt(badgeM.text());
-                                            counter--;
-                                            if(counter != 0){
-                                                badgeM.text(counter);
-                                            }else{
-                                                badgeM.text("");
-                                            }
-                                            thisButton.parent().parent().remove();
-                                            alert('Request Approved.');
-                                        });
-                                    }else{
-                                        loadingScreen.hide('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                    loadingScreen.slideUp('fast',function(){
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            requestMechanicsTable.append(`
+                                <tr>
+                                    <td>${value.last_name}, ${value.first_name}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.contact_number}</td>
+                                    <td>${value.created_at}</td>
+                                    <td>
+                                        <button class="approveMechanicRequestBtn btn positive-btn" value="${value.id}">Approve</button>
+                                        <button class="declineMechanicRequestBtn btn negative-btn" value="${value.id}">Decline</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                        var approveMechanicRequestBtn = $('.approveMechanicRequestBtn');
+                        var declineMechanicRequestBtn = $('.declineMechanicRequestBtn');
+
+                        approveMechanicRequestBtn.click(function(){
+                            if(confirm('Approve This Request?') == true){
+                                globalProductId = $(this).val();
+                                var thisButton = $(this);
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/approveMechanicRequest.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeM.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeM.text(counter);
+                                                }else{
+                                                    badgeM.text("");
+                                                }
+                                                thisButton.parent().parent().remove();
+                                                alert('Request Approved.');
+                                            });
+                                        }else{
+                                            loadingScreen.hide('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-                            });
-                        }
-                    });
-                    declineMechanicRequestBtn.click(function(){
-                        if(confirm('Decline Request?') == true){
-                            globalProductId = $(this).val();
-                            var thisButton = $(this);
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/declineMechanicRequest.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            var counter = parseInt(badgeM.text());
-                                            counter--;
-                                            if(counter != 0){
-                                                badgeM.text(counter);
-                                            }else{
-                                                badgeM.text("");
-                                            }
-                                            thisButton.parent().parent().remove();
-                                            alert('Request Deleted.');
-                                        });
-                                    }else{
-                                        loadingScreen.hide('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                                });
+                            }
+                        });
+                        declineMechanicRequestBtn.click(function(){
+                            if(confirm('Decline Request?') == true){
+                                globalProductId = $(this).val();
+                                var thisButton = $(this);
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/declineMechanicRequest.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeM.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeM.text(counter);
+                                                }else{
+                                                    badgeM.text("");
+                                                }
+                                                thisButton.parent().parent().remove();
+                                                alert('Request Deleted.');
+                                            });
+                                        }else{
+                                            loadingScreen.hide('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -731,53 +741,55 @@
                 type: 'POST',
                 url: 'php/getShopOwners.php',
                 success:function(response){
-                    var data = JSON.parse(response);
-                    $(data).each(function(index,value){
-                        approvedShopOwnersTable.append(`
-                            <tr>
-                                <td>${value.last_name}, ${value.first_name}</td>
-                                <td>${value.email}</td>
-                                <td>${value.contact_number}</td>
-                                <td>${value.updated_at}</td>
-                                <td>
-                                    <button class="editApprovedShopOwnerBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedShopOwnerModal">Update</button>
-                                    <button class="terminateApprovedShopOwnerBtn btn negative-btn" value="${value.id}">Terminate</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                    var editApprovedShopOwnerBtn = $('.editApprovedShopOwnerBtn');
-                    var terminateApprovedShopOwnerBtn =$('.terminateApprovedShopOwnerBtn');
-                    
-                    editApprovedShopOwnerBtn.click(function(){
-                        globalProductId = $(this).val();
-                    });
-                    terminateApprovedShopOwnerBtn.click(function(){
-                        if(confirm('Terminate Shop Owner?') == true){
+                    loadingScreen.slideUp('fast',function(){
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            approvedShopOwnersTable.append(`
+                                <tr>
+                                    <td>${value.last_name}, ${value.first_name}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.contact_number}</td>
+                                    <td>${value.updated_at}</td>
+                                    <td>
+                                        <button class="editApprovedShopOwnerBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedShopOwnerModal">Update</button>
+                                        <button class="terminateApprovedShopOwnerBtn btn negative-btn" value="${value.id}">Terminate</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                        var editApprovedShopOwnerBtn = $('.editApprovedShopOwnerBtn');
+                        var terminateApprovedShopOwnerBtn =$('.terminateApprovedShopOwnerBtn');
+
+                        editApprovedShopOwnerBtn.click(function(){
                             globalProductId = $(this).val();
-                            var thisButton = $(this);
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/terminateShopOwner.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            thisButton.parent().parent().remove();
-                                            alert('Shop Owner Terminated.');
-                                        });
-                                    }else{
-                                        loadingScreen.slideUp('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                        });
+                        terminateApprovedShopOwnerBtn.click(function(){
+                            if(confirm('Terminate Shop Owner?') == true){
+                                globalProductId = $(this).val();
+                                var thisButton = $(this);
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/terminateShopOwner.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                thisButton.parent().parent().remove();
+                                                alert('Shop Owner Terminated.');
+                                            });
+                                        }else{
+                                            loadingScreen.slideUp('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -787,91 +799,93 @@
                 type: 'POST',
                 url: 'php/getShopOwnersRequest.php',
                 success:function(response){
-                    var data = JSON.parse(response);
-                    $(data).each(function(index,value){
-                        shopOwnersRequestTable.append(`
-                            <tr>
-                                <td>${value.last_name}, ${value.first_name}</td>
-                                <td>${value.email}</td>
-                                <td>${value.contact_number}</td>
-                                <td>${value.created_at}</td>
-                                <td>
-                                    <button class="approveShopOwnerRequestBtn btn positive-btn" value="${value.id}">Approve</button>
-                                    <button class="declineShopOwnerRequestBtn btn negative-btn" value="${value.id}">Decline</button>
-                                </td>
-                            </tr>
-                        `);
-                    });
-                    var approveShopOwnerRequestBtn = $('.approveShopOwnerRequestBtn');
-                    var declineShopOwnerRequestBtn = $('.declineShopOwnerRequestBtn');
-                    
-                    approveShopOwnerRequestBtn.click(function(){
-                        if(confirm('Approve This Request?') == true){
-                            globalProductId = $(this).val();
-                            var thisButton = $(this);
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/approveShopOwnerRequest.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            var counter = parseInt(badgeSO.text());
-                                            counter--;
-                                            if(counter != 0){
-                                                badgeSO.text(counter);
-                                            }else{
-                                                badgeSO.text("");
-                                            }
-                                            thisButton.parent().parent().remove();
-                                            alert('Request Approved.');
-                                        });
-                                    }else{
-                                        loadingScreen.slideUp('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                    loadingScreen.slideUp('fast', function(){
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            shopOwnersRequestTable.append(`
+                                <tr>
+                                    <td>${value.last_name}, ${value.first_name}</td>
+                                    <td>${value.email}</td>
+                                    <td>${value.contact_number}</td>
+                                    <td>${value.created_at}</td>
+                                    <td>
+                                        <button class="approveShopOwnerRequestBtn btn positive-btn" value="${value.id}">Approve</button>
+                                        <button class="declineShopOwnerRequestBtn btn negative-btn" value="${value.id}">Decline</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                        var approveShopOwnerRequestBtn = $('.approveShopOwnerRequestBtn');
+                        var declineShopOwnerRequestBtn = $('.declineShopOwnerRequestBtn');
+
+                        approveShopOwnerRequestBtn.click(function(){
+                            if(confirm('Approve This Request?') == true){
+                                globalProductId = $(this).val();
+                                var thisButton = $(this);
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/approveShopOwnerRequest.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeSO.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeSO.text(counter);
+                                                }else{
+                                                    badgeSO.text("");
+                                                }
+                                                thisButton.parent().parent().remove();
+                                                alert('Request Approved.');
+                                            });
+                                        }else{
+                                            loadingScreen.slideUp('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-                            });
-                        }
-                    });
-                    declineShopOwnerRequestBtn.click(function(){
-                        if(confirm('Decline Request?') == true){
-                            globalProductId = $(this).val();
-                            var thisButton = $(this);
-                            loadingScreen.show();
-                            $.ajax({
-                                type: 'POST',
-                                url: 'php/declineShopOwnerRequest.php',
-                                data:
-                                {
-                                    requestId: globalProductId,
-                                },
-                                success:function(response){
-                                    if(response == 'success'){
-                                        loadingScreen.slideUp('fast', function(){
-                                            var counter = parseInt(badgeSO.text());
-                                            counter--;
-                                            if(counter != 0){
-                                                badgeSO.text(counter);
-                                            }else{
-                                                badgeSO.text("");
-                                            }
-                                            thisButton.parent().parent().remove();
-                                            alert('Request Deleted.');
-                                        });
-                                    }else{
-                                        loadingScreen.slideUp('fast', function(){
-                                            alert('Server Error!');
-                                        });
+                                });
+                            }
+                        });
+                        declineShopOwnerRequestBtn.click(function(){
+                            if(confirm('Decline Request?') == true){
+                                globalProductId = $(this).val();
+                                var thisButton = $(this);
+                                loadingScreen.show();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'php/declineShopOwnerRequest.php',
+                                    data:
+                                    {
+                                        requestId: globalProductId,
+                                    },
+                                    success:function(response){
+                                        if(response == 'success'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeSO.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeSO.text(counter);
+                                                }else{
+                                                    badgeSO.text("");
+                                                }
+                                                thisButton.parent().parent().remove();
+                                                alert('Request Deleted.');
+                                            });
+                                        }else{
+                                            loadingScreen.slideUp('fast', function(){
+                                                alert('Server Error!');
+                                            });
+                                        }
                                     }
-                                }
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
                 }
             });
@@ -918,6 +932,7 @@
         popperu();
         
         navShopOwners.click(function(){
+            loadingScreen.show();
             approvedUserSection.slideUp('fast');
             userSection.slideUp('fast');
             mechanicsSection.slideUp('fast');
@@ -928,6 +943,7 @@
             getShopOwners();
         });
         navShopOwnersRequests.click(function(){
+            loadingScreen.show();
             shopOwnersRequestTable.children().remove();
             approvedUserSection.slideUp('fast');
             userSection.slideUp('fast');
@@ -939,6 +955,7 @@
             popperso();
         });
         navRequestMechanics.click(function(){
+            loadingScreen.show();
             requestMechanicsTable.children().remove();
             approvedUserSection.slideUp('fast');
             userSection.slideUp('fast');
@@ -950,6 +967,7 @@
             popperm();
         });
         navMechanics.click(function(){
+            loadingScreen.show();
             approvedMechanicsTable.children().remove();
             approvedUserSection.slideUp('fast');
             userSection.slideUp('fast');
@@ -960,6 +978,7 @@
             getMechanics();
         })
         navAccountRequests.click(function(){
+            loadingScreen.show();
             userTable.children().remove();
             approvedUserSection.slideUp('fast');
             mechanicsSection.slideUp('fast');
@@ -971,6 +990,7 @@
             popperu();
         });
         navApprovedAccounts.click(function(){
+            loadingScreen.show();
             approvedUsersTable.children().remove();
             userSection.slideUp('fast');
             mechanicsSection.slideUp('fast');
