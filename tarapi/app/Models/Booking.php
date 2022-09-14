@@ -15,6 +15,7 @@ class Booking extends Model
         'service',
         'vehicle_type',
         'long',
-        'lat'
+        'lat',
+        'status'
     ];
 }
