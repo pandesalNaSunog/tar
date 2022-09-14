@@ -43,7 +43,7 @@ class ShopMechanicController extends Controller
 
             $response[] = array(
                 'mechanic' => $mechanicItem,
-                'average_rating' => $averageRating
+                'average_rating' => round($averageRating, 2)
             );
         }
 
