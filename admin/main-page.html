@@ -469,6 +469,18 @@
                                                 alert('Account Terminated.');
                                                 thisBtn.parent().parent().remove();
                                             });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisBtn.parent().parent().remove();
+                                            });
                                         }else{
                                             loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
@@ -533,8 +545,20 @@
                                                 alert('Request Approved.');
                                                 thisButton.parent().parent().remove();
                                             });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
+                                            });
                                         }else{
-                                            loadingScreen.hide('fast', function(){
+                                            loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
                                             });
                                         }
@@ -568,8 +592,20 @@
                                                 alert('Request Deleted.');
                                                 thisButton.parent().parent().remove();
                                             });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
+                                            });
                                         }else{
-                                            loadingScreen.hide('fast', function(){
+                                            loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
                                             });
                                         }
@@ -627,10 +663,22 @@
                                                 thisButton.parent().parent().remove();
                                                 alert('Mechanic Terminated.');
                                             })
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
+                                            });
                                         }else{
                                             loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
-                                            })
+                                            });
                                         }
                                     }
                                 });
@@ -689,8 +737,20 @@
                                                 thisButton.parent().parent().remove();
                                                 alert('Request Approved.');
                                             });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeM.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeM.text(counter);
+                                                }else{
+                                                    badgeM.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
+                                            });
                                         }else{
-                                            loadingScreen.hide('fast', function(){
+                                            loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
                                             });
                                         }
@@ -723,8 +783,20 @@
                                                 thisButton.parent().parent().remove();
                                                 alert('Request Deleted.');
                                             });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeM.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeM.text(counter);
+                                                }else{
+                                                    badgeM.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
+                                            });
                                         }else{
-                                            loadingScreen.hide('fast', function(){
+                                            loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
                                             });
                                         }
@@ -781,6 +853,18 @@
                                                 thisButton.parent().parent().remove();
                                                 alert('Shop Owner Terminated.');
                                             });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeU.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeU.text(counter);
+                                                }else{
+                                                    badgeU.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
+                                            });
                                         }else{
                                             loadingScreen.slideUp('fast', function(){
                                                 alert('Server Error!');
@@ -831,6 +915,8 @@
                                         requestId: globalProductId,
                                     },
                                     success:function(response){
+                                        console.log(response);
+                                        alert(globalProductId);
                                         if(response == 'success'){
                                             loadingScreen.slideUp('fast', function(){
                                                 var counter = parseInt(badgeSO.text());
@@ -842,6 +928,18 @@
                                                 }
                                                 thisButton.parent().parent().remove();
                                                 alert('Request Approved.');
+                                            });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeSO.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeSO.text(counter);
+                                                }else{
+                                                    badgeSO.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
                                             });
                                         }else{
                                             loadingScreen.slideUp('fast', function(){
@@ -876,6 +974,18 @@
                                                 }
                                                 thisButton.parent().parent().remove();
                                                 alert('Request Deleted.');
+                                            });
+                                        }else if(response == 'data missing'){
+                                            loadingScreen.slideUp('fast', function(){
+                                                var counter = parseInt(badgeSO.text());
+                                                counter--;
+                                                if(counter != 0){
+                                                    badgeSO.text(counter);
+                                                }else{
+                                                    badgeSO.text("");
+                                                }
+                                                alert('Request ID is Outdated.');
+                                                thisButton.parent().parent().remove();
                                             });
                                         }else{
                                             loadingScreen.slideUp('fast', function(){
@@ -1071,8 +1181,7 @@
 </style>
 <body>
    <!-- loading screen -->
-    <div class="loadingScreen" style="position: absolute;z-index: 99;width: 100%;height: 100vh;background: rgb(0,0,0);
-background: linear-gradient(0deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.35) 13%, rgba(0,0,0,0.7) 44%, rgba(0,0,0,0.9) 72%, rgba(0,0,0,1) 100%);display: flex;align-items: center;justify-content: center;">
+    <div class="loadingScreen" style="position: fixed; top:0; bottom:0; left:0; right: 0;z-index: 99;width: 100%;height:100vh;background: rgb(0,0,0);background: linear-gradient(0deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.35) 13%, rgba(0,0,0,0.7) 44%, rgba(0,0,0,0.9) 72%, rgba(0,0,0,1) 100%);display: flex;align-items: center;justify-content: center;">
        <img id="loader" src="logo.png" alt="TAR logo" class="img-fluid" style="width: auto; max-height: 50px">
    </div>
    <header class="sticky-top shadow-lg" style="z-index: 90;border-bottom: solid 2.5px rgba(0,0,0,0.8);background-color: darkblue;">
