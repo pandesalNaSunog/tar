@@ -15,11 +15,13 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $bookings = Booking::where('customer_id', $id)->first();
-        if($bookings){
-            return response([
-                'message' => 'you are currently booked to a mechanic/shop'
-            ], 401);
-        }
+
+        return response($bookings, 200);
+        // if($bookings){
+        //     return response([
+        //         'message' => 'you are currently booked to a mechanic/shop'
+        //     ], 401);
+        // }
         $mechanics = User::where('user_type', 'mechanic')->where('status', 'idle')->get();
 
         return response($mechanics, 200);
