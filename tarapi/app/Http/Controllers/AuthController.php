@@ -7,6 +7,7 @@ use Laravel\Sanctum;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Booking;
 class AuthController extends Controller
 {
     public function register(Request $request){
@@ -136,9 +137,12 @@ class AuthController extends Controller
     public function profile(Request $request){
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
+        $user = User::where('id', $id)->first(); 
+        $booking = Booking::where('customer_id', $id)->get();
 
-        $user = User::where('id', $id)->first();
-
-        return response($user, 200);
+        return response([
+            'user' => $user,
+            'bookings' => $booking
+        ], 200);
     }
 }
