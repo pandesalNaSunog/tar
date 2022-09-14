@@ -10,7 +10,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
     public function getMechanics(){
-        $mechanics = User::where('user_type', 'mechanic')->get();
+        $mechanics = User::where('user_type', 'mechanic')->where('status', 'idle')->get();
 
         return response($mechanics, 200);
     }

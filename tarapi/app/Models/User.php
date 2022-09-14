@@ -24,7 +24,8 @@ class User extends Authenticatable
         'approval_status',
         'email',
         'password',
-        'user_type'
+        'user_type',
+        'status'
     ];
 
     /**

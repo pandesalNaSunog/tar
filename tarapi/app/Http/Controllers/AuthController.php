@@ -34,6 +34,7 @@ class AuthController extends Controller
             'user_type' => 'user',
             'email' => $request['email'],
             'approval_status' => 'Pending',
+            'status' => 'idle',
         ]);
 
         return response([
@@ -67,6 +68,7 @@ class AuthController extends Controller
             'user_type' => 'mechanic',
             'email' => $request['email'],
             'approval_status' => 'Pending',
+            'status' => 'idle',
         ]);
 
         return response([
@@ -100,6 +102,7 @@ class AuthController extends Controller
             'user_type' => 'owner',
             'email' => $request['email'],
             'approval_status' => 'Pending',
+            'status' => 'idle',
         ]);
 
         return response([
