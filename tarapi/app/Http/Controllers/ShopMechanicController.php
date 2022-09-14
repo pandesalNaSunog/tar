@@ -51,6 +51,7 @@ class ShopMechanicController extends Controller
             'shop_mechanic_id' => $request['shop_mechanic_id'],
             'lat' => $request['lat'],
             'long' => $request['long'],
+            'status' => 'pending',
         ]);
 
         return response([
@@ -73,5 +74,31 @@ class ShopMechanicController extends Controller
         ]);
 
         return response($rating,200);
+    }
+
+    public function acceptBooking(Request $request){
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        $userType = $user->user_type;
+
+        if($userType != 'mechanic' && $userType != 'owner'){
+            return response([
+                'message' => 'you are not mechanic/shop',
+            ], 401);
+        }
+
+        $booking = Booking::where('id', $request['booking_id'])->first();
+
+        $booking->update([
+            'status' => 'accepted'
+        ]);
+
+        return response($booking, 200);
     }
 }
