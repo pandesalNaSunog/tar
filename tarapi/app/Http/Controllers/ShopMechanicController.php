@@ -32,8 +32,14 @@ class ShopMechanicController extends Controller
                 $totalRatings += $ratingItem->rating;
                 $ratingItems++;
             }
+            
 
-            $averageRating = $totalRatings / $ratingItems;
+            if($totalRatings == 0 || $ratingItems == 0){
+                $averageRating = 0;
+            }else{
+                $averageRating = $totalRatings / $ratingItems;
+            }
+            
 
             $response[] = array(
                 'mechanic' => $mechanicItem,
