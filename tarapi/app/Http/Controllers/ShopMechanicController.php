@@ -32,15 +32,12 @@ class ShopMechanicController extends Controller
                 $totalRatings += $ratingItem->rating;
                 $ratingItems++;
             }
-            
-
             if($totalRatings == 0 || $ratingItems == 0){
                 $averageRating = 0;
             }else{
                 $averageRating = $totalRatings / $ratingItems;
             }
-            
-
+        
             $response[] = array(
                 'mechanic' => $mechanicItem,
                 'average_rating' => round($averageRating, 2)
@@ -209,9 +206,7 @@ class ShopMechanicController extends Controller
     public function hasBooking(Request $request){
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
-
         $booking = Booking::where('customer_id', $id)->first();
-
         if($booking){
             return response([
                 'message' => 'has booking',
@@ -221,5 +216,20 @@ class ShopMechanicController extends Controller
         return response([
             'message' => 'no booking'
         ], 200);
+    }
+
+    public function getMechanicBooking(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('shop_mechanic_id', $id)->first();
+
+        if(!$booking){
+            return response([
+                'message' => 'no bookings',
+            ], 401);
+        }
+
+        return response($booking, 200);
     }
 }
