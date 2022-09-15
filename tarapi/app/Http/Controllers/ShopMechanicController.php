@@ -205,4 +205,21 @@ class ShopMechanicController extends Controller
 
         return response($response, 200);
     }
+
+    public function hasBooking(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('customer_id', $id)->first();
+
+        if($booking){
+            return response([
+                'message' => 'has booking',
+            ], 200);
+        }
+
+        return response([
+            'message' => 'no booking'
+        ], 200);
+    }
 }
