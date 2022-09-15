@@ -108,6 +108,9 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $user = User::where('id', $id)->first();
+        $user->update([
+            'status' => 'busy',
+        ]);
 
         $userType = $user->user_type;
 
@@ -174,8 +177,32 @@ class ShopMechanicController extends Controller
             ], 401);
         }
 
-        $shops = User::where('user_type', 'owner')->get();
+        $shops = User::where('user_type', 'owner')->where('status', 'idle')->get();
 
-        return response($shops, 200);
+        foreach($shops as $mechanicItem){
+            $mechanicId = $mechanicItem->id;
+            $ratingItems = 0;
+            $totalRatings = 0;
+            $ratings = Rating::where('mechanic_shop_id', $mechanicId)->get();
+            foreach($ratings as $ratingItem){
+                $totalRatings += $ratingItem->rating;
+                $ratingItems++;
+            }
+            
+
+            if($totalRatings == 0 || $ratingItems == 0){
+                $averageRating = 0;
+            }else{
+                $averageRating = $totalRatings / $ratingItems;
+            }
+            
+
+            $response[] = array(
+                'mechanic' => $mechanicItem,
+                'average_rating' => round($averageRating, 2)
+            );
+        }
+
+        return response($response, 200);
     }
 }
