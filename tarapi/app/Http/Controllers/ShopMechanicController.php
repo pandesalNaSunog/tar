@@ -229,7 +229,16 @@ class ShopMechanicController extends Controller
                 'message' => 'no bookings',
             ], 401);
         }
+        $customerId = $booking->customer_id;
+        $user = User::where('id', $customerId)->first();
 
-        return response($booking, 200);
+        return response([
+            'booking_id' => $booking->id,
+            'customer' => $user,
+            'long' => $booking->long,
+            'lat' => $booking->lat,
+            'service' => $booking->service,
+            'vehicle_type' => $booking->vehicle_type
+        ]);
     }
 }
