@@ -119,10 +119,19 @@
                                 approvedShopOwnersTable.children().remove();
                                 getShopOwners();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    ownerFirstNameEdit.val("");
+                                    ownerLastNameEdit.val("");
+                                    approvedShopOwnersTable.children().remove();
+                                    getShopOwners();
+                                    popperso();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
                                     alert('Server Error!');
-                                })
+                                });
                             }
                         }
                     });
@@ -151,10 +160,18 @@
                                 approvedShopOwnersTable.children().remove();
                                 getShopOwners();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    ownerEmailEdit.val("");
+                                    approvedShopOwnersTable.children().remove();
+                                    getShopOwners();
+                                    popperso();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
                                     alert('Server Error!');
-                                })
+                                });
                             }
                         }
                     });
@@ -183,10 +200,18 @@
                                 approvedShopOwnersTable.children().remove();
                                 getShopOwners();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    ownerContactNumberEdit.val("");
+                                    approvedShopOwnersTable.children().remove();
+                                    getShopOwners();
+                                    popperso();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
                                     alert('Server Error!');
-                                })
+                                });
                             }
                         }
                     });
@@ -233,10 +258,19 @@
                                 approvedMechanicsTable.children().remove();
                                 getMechanics();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    mechanicFirstNameEdit.val("");
+                                    mechanicLastNameEdit.val("");
+                                    approvedMechanicsTable.children().remove();
+                                    getMechanics();
+                                    popperm();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
                                     alert('Server Error!');
-                                })
+                                });
                             }
                         }
                     });
@@ -265,9 +299,17 @@
                                 approvedMechanicsTable.children().remove();
                                 getMechanics();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    mechanicEmailEdit.val("");
+                                    approvedMechanicsTable.children().remove();
+                                    getMechanics();
+                                    popperm();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
-                                    alert('Server Error!')
+                                    alert('Server Error!');
                                 });
                             }
                         }
@@ -297,9 +339,17 @@
                                 approvedMechanicsTable.children().remove();
                                 getMechanics();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    mechanicContactNumberEdit.val("");
+                                    approvedMechanicsTable.children().remove();
+                                    getMechanics();
+                                    popperm();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
-                                    alert('Server Error!')
+                                    alert('Server Error!');
                                 });
                             }
                         }
@@ -348,9 +398,18 @@
                                 approvedUsersTable.children().remove();
                                 getApprovedUsers();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    userFirstNameEdit.val("");
+                                    userLastNameEdit.val("");
+                                    approvedUsersTable.children().remove();
+                                    getApprovedUsers();
+                                    popperu();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
-                                    alert('Server Error!')
+                                    alert('Server Error!');
                                 });
                             }
                         }
@@ -380,9 +439,17 @@
                                 approvedUsersTable.children().remove();
                                 getApprovedUsers();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    userEmailEdit.val("");
+                                    approvedUsersTable.children().remove();
+                                    getApprovedUsers();
+                                    popperu();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
-                                    alert('Server Error!')
+                                    alert('Server Error!');
                                 });
                             }
                         }
@@ -412,9 +479,17 @@
                                 approvedUsersTable.children().remove();
                                 getApprovedUsers();
                                 loadingScreen.slideUp('fast');
+                            }else if(response == 'no data'){
+                                loadingScreen.slideUp('fast', function(){
+                                    userContactNumberEdit.val("");
+                                    approvedUsersTable.children().remove();
+                                    getApprovedUsers();
+                                    popperu();
+                                    alert('Request ID is Outdated.');
+                                });
                             }else{
                                 loadingScreen.slideUp('fast', function(){
-                                    alert('Server Error!')
+                                    alert('Server Error!');
                                 });
                             }
                         }
@@ -915,8 +990,6 @@
                                         requestId: globalProductId,
                                     },
                                     success:function(response){
-                                        console.log(response);
-                                        alert(globalProductId);
                                         if(response == 'success'){
                                             loadingScreen.slideUp('fast', function(){
                                                 var counter = parseInt(badgeSO.text());
@@ -1051,6 +1124,7 @@
             shopOwnersSection.slideDown('slow');
             approvedShopOwnersTable.children().remove();
             getShopOwners();
+            popperso();
         });
         navShopOwnersRequests.click(function(){
             loadingScreen.show();
@@ -1086,6 +1160,7 @@
             shopOwnersRequestSection.slideUp('fast');
             shopOwnersSection.slideUp('fast');
             getMechanics();
+            popperm();
         })
         navAccountRequests.click(function(){
             loadingScreen.show();
@@ -1109,6 +1184,7 @@
             shopOwnersRequestSection.slideUp('fast');
             shopOwnersSection.slideUp('fast');
             getApprovedUsers();
+            popperu();
         });
         
         logoutButton.click(function(){
