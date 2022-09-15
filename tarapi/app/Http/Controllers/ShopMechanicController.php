@@ -162,4 +162,20 @@ class ShopMechanicController extends Controller
 
         return response($booking, 200);
     }
+
+    public function getShops(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+        $bookings = Booking::where('customer_id', $id)->first();
+
+        if($bookings){
+            return response([
+                'message' => 'you are already book to a mechanic/shop',
+            ], 401);
+        }
+
+        $shops = User::where('user_type', 'owner')->get();
+
+        return response($shops, 200);
+    }
 }
