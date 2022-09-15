@@ -140,4 +140,26 @@ class ShopMechanicController extends Controller
             'status' => $booking->status
         ], 200);
     }
+
+    public function cancelBooking(Request $request){
+
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
+
+        if(!$booking){
+            return response([
+                'message' => 'does not exist'
+            ]);
+        }
+
+        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->delete();
+
+        return response($booking, 200);
+    }
 }
