@@ -12,7 +12,7 @@
 <script>
     $(document).ready(function(){
         //hidden parts
-        $('#approvedUserSection,#mechanicsSection,#requestMechanicsSection,#shopOwnersSection,#shopOwnersRequestSection').hide();
+        $('#approvedUserSection,#mechanicsSection,#requestMechanicsSection,#shopOwnersSection,#shopOwnersRequestSection,#allUsersBtn,#allMechanicBtn').hide();
         
         var loadingScreen = $('.loadingScreen');
         
@@ -78,7 +78,15 @@
         var inboxM = 0;
         var badgeU = $('#badgeU');
         var inboxU = 0;
-        
+        var allUsersBtn = $('#allUsersBtn');
+        var searchUserInput = $('#searchUserInput');
+        var searchUserBtn = $('#searchUserBtn');
+        var allMechanicBtn = $('#allMechanicBtn');
+        var searchMechanicInput = $('#searchMechanicInput');
+        var searchMechanicBtn = $('#searchMechanicBtn');
+        var allOwnerBtn = $('#allOwnerBtn');
+        var searchOwnerInput = $('#searchOwnerInput');
+        var searchOwnerBtn = $('#searchOwnerBtn');
         
         ownerFirstNameEdit.on('keydown',function(){
             $(this).removeClass('is-invalid');
@@ -114,11 +122,12 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                ownerFirstNameEdit.val("");
-                                ownerLastNameEdit.val("");
-                                approvedShopOwnersTable.children().remove();
-                                getShopOwners();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast', function(){
+                                    ownerFirstNameEdit.val("");
+                                    ownerLastNameEdit.val("");
+                                    approvedShopOwnersTable.children().remove();
+                                    getShopOwners();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     ownerFirstNameEdit.val("");
@@ -156,10 +165,11 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                ownerEmailEdit.val("");
-                                approvedShopOwnersTable.children().remove();
-                                getShopOwners();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    ownerEmailEdit.val("");
+                                    approvedShopOwnersTable.children().remove();
+                                    getShopOwners();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     ownerEmailEdit.val("");
@@ -196,10 +206,11 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                ownerContactNumberEdit.val("");
-                                approvedShopOwnersTable.children().remove();
-                                getShopOwners();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    ownerContactNumberEdit.val("");
+                                    approvedShopOwnersTable.children().remove();
+                                    getShopOwners();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     ownerContactNumberEdit.val("");
@@ -253,11 +264,12 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                mechanicFirstNameEdit.val("");
-                                mechanicLastNameEdit.val("");
-                                approvedMechanicsTable.children().remove();
-                                getMechanics();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    mechanicFirstNameEdit.val("");
+                                    mechanicLastNameEdit.val("");
+                                    approvedMechanicsTable.children().remove();
+                                    getMechanics();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     mechanicFirstNameEdit.val("");
@@ -295,10 +307,11 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                mechanicEmailEdit.val("");
-                                approvedMechanicsTable.children().remove();
-                                getMechanics();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    mechanicEmailEdit.val("");
+                                    approvedMechanicsTable.children().remove();
+                                    getMechanics();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     mechanicEmailEdit.val("");
@@ -335,10 +348,11 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                mechanicContactNumberEdit.val("");
-                                approvedMechanicsTable.children().remove();
-                                getMechanics();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    mechanicContactNumberEdit.val("");
+                                    approvedMechanicsTable.children().remove();
+                                    getMechanics();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     mechanicContactNumberEdit.val("");
@@ -393,11 +407,12 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                userFirstNameEdit.val("");
-                                userLastNameEdit.val("");
-                                approvedUsersTable.children().remove();
-                                getApprovedUsers();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    userFirstNameEdit.val("");
+                                    userLastNameEdit.val("");
+                                    approvedUsersTable.children().remove();
+                                    getApprovedUsers();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     userFirstNameEdit.val("");
@@ -435,10 +450,11 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                userEmailEdit.val("");
-                                approvedUsersTable.children().remove();
-                                getApprovedUsers();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    userEmailEdit.val("");
+                                    approvedUsersTable.children().remove();
+                                    getApprovedUsers();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     userEmailEdit.val("");
@@ -475,10 +491,11 @@
                         },
                         success:function(response){
                             if(response == 'success'){
-                                userContactNumberEdit.val("");
-                                approvedUsersTable.children().remove();
-                                getApprovedUsers();
-                                loadingScreen.slideUp('fast');
+                                loadingScreen.slideUp('fast',function(){
+                                    userContactNumberEdit.val("");
+                                    approvedUsersTable.children().remove();
+                                    getApprovedUsers();
+                                });
                             }else if(response == 'no data'){
                                 loadingScreen.slideUp('fast', function(){
                                     userContactNumberEdit.val("");
@@ -497,7 +514,86 @@
                 }
             }
         });
-        
+        function searchApprovedUsers(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/searchApprovedUsers.php',
+                data:
+                {
+                    searchUserInput: searchUserInput.val(),
+                },
+                success:function(response){
+                    loadingScreen.slideUp('fast',function(){
+                        if(response == 'no data'){
+                            alert('No Results for: ' + searchUserInput.val());
+                        }else{
+                            loadingScreen.slideUp('fast',function(){
+                                var data = JSON.parse(response);
+                                $(data).each(function(index,value){
+                                    approvedUsersTable.append(`
+                                        <tr>
+                                            <td>${value.last_name}, ${value.first_name}</td>
+                                            <td>${value.email}</td>
+                                            <td>${value.contact_number}</td>
+                                            <td>${value.updated_at}</td>
+                                            <td>
+                                                <button class="editApprovedUserBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedUserModal">Update</button>
+                                                <button class="terminateApprovedUserBtn btn negative-btn" value="${value.id}">Terminate</button>
+                                            </td>
+                                        </tr>
+                                    `);
+                                });
+                                var editApprovedUserBtn = $('.editApprovedUserBtn');
+                                var terminateApprovedUserBtn = $('.terminateApprovedUserBtn');
+
+                                editApprovedUserBtn.click(function(){
+                                    globalProductId = $(this).val();
+                                });
+                                terminateApprovedUserBtn.click(function(){
+                                    if(confirm('Terminate This Account?') == true){
+                                        var thisBtn = $(this);
+                                        loadingScreen.show();
+                                        globalProductId = $(this).val();
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: 'php/terminateApprovedUser.php',
+                                            data:
+                                            {
+                                                requestId: globalProductId,
+                                            },
+                                            success:function(response){
+                                                if(response == 'success'){
+                                                    loadingScreen.slideUp('fast', function(){
+                                                        alert('Account Terminated.');
+                                                        thisBtn.parent().parent().remove();
+                                                    });
+                                                }else if(response == 'data missing'){
+                                                    loadingScreen.slideUp('fast', function(){
+                                                        var counter = parseInt(badgeU.text());
+                                                        counter--;
+                                                        if(counter != 0){
+                                                            badgeU.text(counter);
+                                                        }else{
+                                                            badgeU.text("");
+                                                        }
+                                                        alert('Request ID is Outdated.');
+                                                        thisBtn.parent().parent().remove();
+                                                    });
+                                                }else{
+                                                    loadingScreen.slideUp('fast', function(){
+                                                        alert('Server Error!');
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        }
         function getApprovedUsers(){
             $.ajax({
                 type: 'POST',
@@ -519,13 +615,12 @@
                                 </tr>
                             `);
                         });
-                        var ediApprovedUserBtn = $('.editApprovedUserBtn');
+                        var editApprovedUserBtn = $('.editApprovedUserBtn');
                         var terminateApprovedUserBtn = $('.terminateApprovedUserBtn');
 
-                        ediApprovedUserBtn.click(function(){
+                        editApprovedUserBtn.click(function(){
                             globalProductId = $(this).val();
                         });
-
                         terminateApprovedUserBtn.click(function(){
                             if(confirm('Terminate This Account?') == true){
                                 var thisBtn = $(this);
@@ -563,7 +658,6 @@
                                         }
                                     }
                                 });
-
                             }
                         });
                     });
@@ -692,6 +786,87 @@
                 }
             });
         };
+        function searchApprovedMechanics(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/searchApprovedMechanic.php',
+                data:
+                {
+                    searchMechanicInput: searchMechanicInput.val(),
+                },
+                success:function(response){
+                    if(response == 'no data'){
+                        loadingScreen.slideUp('fast', function(){
+                            alert('No Results for: ' + searchMechanicInput.val());
+                        });
+                    }else{
+                        loadingScreen.slideUp('fast',function(){
+                            var data = JSON.parse(response);
+                            $(data).each(function(index,value){
+                                approvedMechanicsTable.append(`
+                                    <tr>
+                                        <td>${value.last_name}, ${value.first_name}</td>
+                                        <td>${value.email}</td>
+                                        <td>${value.contact_number}</td>
+                                        <td>${value.updated_at}</td>
+                                        <td>
+                                            <button class="editApprovedMechanicBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedMechanicsModal">Update</button>
+                                            <button class="terminateApprovedMechanicBtn btn negative-btn" value="${value.id}">Terminate</button>
+                                        </td>
+                                    </tr>
+                                `);
+                            });
+                            var editApprovedMechanicBtn = $('.editApprovedMechanicBtn');
+                            var terminateApprovedMechanicBtn = $('.terminateApprovedMechanicBtn');
+
+                            editApprovedMechanicBtn.click(function(){
+                                globalProductId = $(this).val();
+                            });
+
+                            terminateApprovedMechanicBtn.click(function(){
+                                if(confirm('Terminate Mechanic?') == true){
+                                    globalProductId = $(this).val();
+                                    var thisButton =$(this);
+                                    loadingScreen.show();
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'php/terminateApprovedMechanic.php',
+                                        data:
+                                        {
+                                            requestId: globalProductId,
+                                        },
+                                        success:function(response){
+                                            if(response == 'success'){
+                                                loadingScreen.slideUp('fast', function(){
+                                                    thisButton.parent().parent().remove();
+                                                    alert('Mechanic Terminated.');
+                                                })
+                                            }else if(response == 'data missing'){
+                                                loadingScreen.slideUp('fast', function(){
+                                                    var counter = parseInt(badgeU.text());
+                                                    counter--;
+                                                    if(counter != 0){
+                                                        badgeU.text(counter);
+                                                    }else{
+                                                        badgeU.text("");
+                                                    }
+                                                    alert('Request ID is Outdated.');
+                                                    thisButton.parent().parent().remove();
+                                                });
+                                            }else{
+                                                loadingScreen.slideUp('fast', function(){
+                                                    alert('Server Error!');
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            }); 
+                        });
+                    }
+                }
+            });
+        }
         function getMechanics(){
             $.ajax({
                 type: 'POST',
@@ -880,6 +1055,85 @@
                             }
                         });
                     });
+                }
+            });
+        }
+        function searchApprovedOwners(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/searchApprovedOwners.php',
+                data:{
+                    searchOwnerInput: searchOwnerInput.val(),
+                },
+                success:function(response){
+                    if(response == 'no data'){
+                        loadingScreen.slideUp('fast',function(){
+                            alert('No Results for: ' + searchOwnerInput.val());
+                        });
+                    }else{
+                        loadingScreen.slideUp('fast',function(){
+                            var data = JSON.parse(response);
+                            $(data).each(function(index,value){
+                                approvedShopOwnersTable.append(`
+                                    <tr>
+                                        <td>${value.last_name}, ${value.first_name}</td>
+                                        <td>${value.email}</td>
+                                        <td>${value.contact_number}</td>
+                                        <td>${value.updated_at}</td>
+                                        <td>
+                                            <button class="editApprovedShopOwnerBtn btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#updateApprovedShopOwnerModal">Update</button>
+                                            <button class="terminateApprovedShopOwnerBtn btn negative-btn" value="${value.id}">Terminate</button>
+                                        </td>
+                                    </tr>
+                                `);
+                            });
+                            var editApprovedShopOwnerBtn = $('.editApprovedShopOwnerBtn');
+                            var terminateApprovedShopOwnerBtn =$('.terminateApprovedShopOwnerBtn');
+
+                            editApprovedShopOwnerBtn.click(function(){
+                                globalProductId = $(this).val();
+                            });
+                            terminateApprovedShopOwnerBtn.click(function(){
+                                if(confirm('Terminate Shop Owner?') == true){
+                                    globalProductId = $(this).val();
+                                    var thisButton = $(this);
+                                    loadingScreen.show();
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'php/terminateShopOwner.php',
+                                        data:
+                                        {
+                                            requestId: globalProductId,
+                                        },
+                                        success:function(response){
+                                            if(response == 'success'){
+                                                loadingScreen.slideUp('fast', function(){
+                                                    thisButton.parent().parent().remove();
+                                                    alert('Shop Owner Terminated.');
+                                                });
+                                            }else if(response == 'data missing'){
+                                                loadingScreen.slideUp('fast', function(){
+                                                    var counter = parseInt(badgeU.text());
+                                                    counter--;
+                                                    if(counter != 0){
+                                                        badgeU.text(counter);
+                                                    }else{
+                                                        badgeU.text("");
+                                                    }
+                                                    alert('Request ID is Outdated.');
+                                                    thisButton.parent().parent().remove();
+                                                });
+                                            }else{
+                                                loadingScreen.slideUp('fast', function(){
+                                                    alert('Server Error!');
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        });
+                    }
                 }
             });
         }
@@ -1187,6 +1441,52 @@
             popperu();
         });
         
+        allUsersBtn.click(function(){
+            $(this).slideUp('fast');
+            loadingScreen.show();
+            approvedUsersTable.children().remove();
+            getApprovedUsers();
+            popperu();
+        });
+        searchUserBtn.click(function(){
+            if(searchUserInput.val() != ""){
+                allUsersBtn.slideDown('fast');
+                loadingScreen.show();
+                approvedUsersTable.children().remove();
+                searchApprovedUsers();    
+            }
+        });
+        allMechanicBtn.click(function(){
+            $(this).slideUp('fast');
+            loadingScreen.show();
+            approvedMechanicsTable.children().remove();
+            getMechanics();
+            popperm();
+        });
+        searchMechanicBtn.click(function(){
+            if(searchMechanicInput.val() != ""){
+                allMechanicBtn.slideDown('fast');
+                loadingScreen.show();
+                approvedMechanicsTable.children().remove();
+                searchApprovedMechanics();
+            }
+        });
+        allOwnerBtn.click(function(){
+            $(this).slideUp('fast');
+            loadingScreen.show();
+            approvedShopOwnersTable.children().remove();
+            getShopOwners();
+            popperso();
+        });
+        searchOwnerBtn.click(function(){
+            if(searchOwnerInput.val() != ""){
+                allOwnerBtn.slideDown('fast');
+                loadingScreen.show();
+                approvedShopOwnersTable.children().remove();
+                searchApprovedOwners();
+            }
+        });
+        
         logoutButton.click(function(){
             if(confirm('Are You Sure?') == true){
                 loadingScreen.show();
@@ -1203,7 +1503,6 @@
                 })
             }
         });
-        
         
         
         
@@ -1257,15 +1556,15 @@
 </style>
 <body>
    <!-- loading screen -->
-    <div class="loadingScreen" style="position: fixed; top:0; bottom:0; left:0; right: 0;z-index: 99;width: 100%;height:100vh;background: rgb(0,0,0);background: linear-gradient(0deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.35) 13%, rgba(0,0,0,0.7) 44%, rgba(0,0,0,0.9) 72%, rgba(0,0,0,1) 100%);display: flex;align-items: center;justify-content: center;">
-       <img id="loader" src="logo.png" alt="TAR logo" class="img-fluid" style="width: auto; max-height: 50px">
+    <div class="loadingScreen" style="position: fixed; top:0; bottom:0; left:0; right: 0;z-index: 99;width: 100%;height:100vh;background: rgb(0,0,0);background: linear-gradient(0deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.35) 13%, rgba(0,0,0,0.7) 44%, rgba(0,0,0,0.9) 72%, rgba(0,0,0,1) 100%);display: flex;align-items: center;justify-content: center;pointer-events: none; user-select: none;">
+       <img id="loader" src="logo.png" alt="TAR logo" class="img-fluid" style="width: auto; max-height: 50px;pointer-events: none; user-select: none;">
    </div>
-   <header class="sticky-top shadow-lg" style="z-index: 90;border-bottom: solid 2.5px rgba(0,0,0,0.8);background-color: darkblue;">
+   <header class="sticky-top shadow-lg" style="z-index: 90;border-bottom: solid 2.5px rgba(0,0,0,0.8);background-color: darkblue;user-select: none;">
        <nav class="navbar navbar-expand-lg navbar-dark py-0">
             <div class="container my-0">
                 <div class="navbar-brand m-0">
-                    <h1 style="font-family: fantasy;color: white;">
-                        <img src="logo.png" height="70px" width="70px" alt="">Tap And Repair
+                    <h1 style="font-family: fantasy;color: white;pointer-events: none; user-select: none;">
+                        <img src="logo.png" height="70px" width="70px" alt="" style="pointer-events: none; user-select: none;">Tap And Repair
                     </h1>
                 </div>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav-menu">
@@ -1358,8 +1657,27 @@
        <section id="approvedUserSection">
             <div class="container">
                 <div class="card mt-5 rounded-2 shadow">
-                    <div class="card-header">
-                        <h4 class="fw-bold my-3 mx-5">Approved Accounts:</h4>
+                    <div class="card-header" style="display: flex;justify-content: space-between;">
+                        <div>
+                            <h4 class="fw-bold my-3 mx-5">Approved Accounts:</h4>
+                        </div>
+                        <div style="align-items: center;justify-content: center;">
+                            <div style="display: flex;justify-content: space-between;">
+                                <button class=" btn positive-btn my-3 mx-1 shadow shadow-md" id="allUsersBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+                                    </svg>
+                                </button>
+                                <div class="input-group my-3">
+                                  <input type="text" class="form-control shadow shadow-md" placeholder="Search First/Last Name..." id="searchUserInput">
+                                  <button class="btn btn-outline-secondary positive-btn shadow shadow-md" type="button" id="searchUserBtn">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -1382,8 +1700,27 @@
        <section id="mechanicsSection">
             <div class="container">
                 <div class="card mt-5 rounded-2 shadow">
-                    <div class="card-header">
-                        <h4 class="fw-bold my-3 mx-5">Approved Mechanics:</h4>
+                    <div class="card-header" style="display: flex;justify-content: space-between;">
+                        <div>
+                            <h4 class="fw-bold my-3 mx-5">Approved Mechanics:</h4>
+                        </div>
+                        <div style="align-items: center;justify-content: center;">
+                            <div style="display: flex;justify-content: space-between;">
+                                <button class=" btn positive-btn my-3 mx-1 shadow shadow-md" id="allMechanicBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+                                    </svg>
+                                </button>
+                                <div class="input-group my-3">
+                                  <input id="searchMechanicInput" type="text" class="form-control shadow shadow-md" placeholder="Search First/Last Name...">
+                                  <button class="btn btn-outline-secondary positive-btn shadow shadow-md" type="button" id="searchMechanicBtn">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -1430,8 +1767,27 @@
        <section id="shopOwnersSection">
             <div class="container">
                 <div class="card mt-5 rounded-2 shadow">
-                    <div class="card-header">
-                        <h4 class="fw-bold my-3 mx-5">Approved Shop Owners:</h4>
+                    <div class="card-header" style="display: flex; justify-content: space-between;">
+                        <div>
+                            <h4 class="fw-bold my-3 mx-5">Approved Shop Owners:</h4>
+                        </div>
+                        <div style="align-items: center;justify-content: center;">
+                            <div style="display: flex;justify-content: space-between;">
+                                <button class=" btn positive-btn my-3 mx-1 shadow shadow-md" id="allOwnerBtn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+                                      <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
+                                    </svg>
+                                </button>
+                                <div class="input-group my-3">
+                                  <input id="searchOwnerInput" type="text" class="form-control shadow shadow-md" placeholder="Search First/Last Name...">
+                                  <button class="btn btn-outline-secondary positive-btn shadow shadow-md" type="button" id="searchOwnerBtn">
+                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                        </svg>
+                                  </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
