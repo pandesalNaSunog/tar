@@ -32,15 +32,12 @@ class ShopMechanicController extends Controller
                 $totalRatings += $ratingItem->rating;
                 $ratingItems++;
             }
-            
-
             if($totalRatings == 0 || $ratingItems == 0){
                 $averageRating = 0;
             }else{
                 $averageRating = $totalRatings / $ratingItems;
             }
-            
-
+        
             $response[] = array(
                 'mechanic' => $mechanicItem,
                 'average_rating' => round($averageRating, 2)
@@ -108,6 +105,9 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $user = User::where('id', $id)->first();
+        $user->update([
+            'status' => 'busy',
+        ]);
 
         $userType = $user->user_type;
 
@@ -139,5 +139,106 @@ class ShopMechanicController extends Controller
         return response([
             'status' => $booking->status
         ], 200);
+    }
+
+    public function cancelBooking(Request $request){
+
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
+
+        if(!$booking){
+            return response([
+                'message' => 'does not exist'
+            ]);
+        }
+
+        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->delete();
+
+        return response($booking, 200);
+    }
+
+    public function getShops(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+        $bookings = Booking::where('customer_id', $id)->first();
+
+        if($bookings){
+            return response([
+                'message' => 'you are already book to a mechanic/shop',
+            ], 401);
+        }
+
+        $shops = User::where('user_type', 'owner')->where('status', 'idle')->get();
+
+        foreach($shops as $mechanicItem){
+            $mechanicId = $mechanicItem->id;
+            $ratingItems = 0;
+            $totalRatings = 0;
+            $ratings = Rating::where('mechanic_shop_id', $mechanicId)->get();
+            foreach($ratings as $ratingItem){
+                $totalRatings += $ratingItem->rating;
+                $ratingItems++;
+            }
+            
+
+            if($totalRatings == 0 || $ratingItems == 0){
+                $averageRating = 0;
+            }else{
+                $averageRating = $totalRatings / $ratingItems;
+            }
+            
+
+            $response[] = array(
+                'mechanic' => $mechanicItem,
+                'average_rating' => round($averageRating, 2)
+            );
+        }
+
+        return response($response, 200);
+    }
+
+    public function hasBooking(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+        $booking = Booking::where('customer_id', $id)->first();
+        if($booking){
+            return response([
+                'message' => 'has booking',
+            ], 200);
+        }
+
+        return response([
+            'message' => 'no booking'
+        ], 200);
+    }
+
+    public function getMechanicBooking(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('shop_mechanic_id', $id)->first();
+
+        if(!$booking){
+            return response([
+                'message' => 'no bookings',
+            ], 401);
+        }
+        $customerId = $booking->customer_id;
+        $user = User::where('id', $customerId)->first();
+
+        return response([
+            'booking_id' => $booking->id,
+            'customer' => $user,
+            'long' => $booking->long,
+            'lat' => $booking->lat,
+            'service' => $booking->service,
+            'vehicle_type' => $booking->vehicle_type
+        ]);
     }
 }

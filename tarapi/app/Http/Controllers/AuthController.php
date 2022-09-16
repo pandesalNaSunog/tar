@@ -12,6 +12,7 @@ class AuthController extends Controller
 {
     public function register(Request $request){
         $request->validate([
+            'user_type' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'contact_number' => 'required',
@@ -32,75 +33,7 @@ class AuthController extends Controller
             'last_name' => $request['last_name'],
             'contact_number' => $request['contact_number'],
             'password' => bcrypt($request['password']),
-            'user_type' => 'user',
-            'email' => $request['email'],
-            'approval_status' => 'Pending',
-            'status' => 'idle',
-        ]);
-
-        return response([
-            'message' => 'registered'
-        ]
-        ,200);
-    }
-
-    public function registerMechanic(Request $request){
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'contact_number' => 'required',
-            'password' => 'required',
-        ]);
-
-        $checkUser = User::where('contact_number', $request['contact_number'])->first();
-
-        if($checkUser){
-            return response([
-                'message' => 'contact number already exists'
-            ], 401);
-        }
-
-
-        $user = User::create([
-            'first_name' => $request['first_name'],
-            'last_name' => $request['last_name'],
-            'contact_number' => $request['contact_number'],
-            'password' => bcrypt($request['password']),
-            'user_type' => 'mechanic',
-            'email' => $request['email'],
-            'approval_status' => 'Pending',
-            'status' => 'idle',
-        ]);
-
-        return response([
-            'message' => 'registered'
-        ]
-        ,200);
-    }
-
-    public function registerOwner(Request $request){
-        $request->validate([
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'contact_number' => 'required',
-            'password' => 'required',
-        ]);
-
-        $checkUser = User::where('contact_number', $request['contact_number'])->first();
-
-        if($checkUser){
-            return response([
-                'message' => 'contact number already exists'
-            ], 401);
-        }
-
-
-        $user = User::create([
-            'first_name' => $request['first_name'],
-            'last_name' => $request['last_name'],
-            'contact_number' => $request['contact_number'],
-            'password' => bcrypt($request['password']),
-            'user_type' => 'owner',
+            'user_type' => $request['user_type'],
             'email' => $request['email'],
             'approval_status' => 'Pending',
             'status' => 'idle',
@@ -159,6 +92,19 @@ class AuthController extends Controller
         return response([
             'user' => $user,
             'bookings' => $bookingResponse
+        ], 200);
+    }
+
+    public function getUserType(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        $userType = $user->user_type;
+
+        return response([
+            'user_type' => $userType
         ], 200);
     }
 }
