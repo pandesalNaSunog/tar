@@ -6,7 +6,7 @@
                 echo $con->connect_error;
             }else{
                 $requestId = $_POST['searchUserInput'];
-                $query = "SELECT count(id) AS total FROM users WHERE first_name LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved' OR last_name LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved' OR contact_number LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved'  OR email LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved'";
+                $query = "SELECT count(id) AS total FROM users WHERE first_name LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved' OR last_name LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved' OR contact_number LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved' OR email LIKE '%$requestId%' AND user_type='User' AND approval_status='Approved'";
                 $result = mysqli_query($con,$query);
                 $values = mysqli_fetch_assoc($result);
                 $num_rows = $values['total'];
