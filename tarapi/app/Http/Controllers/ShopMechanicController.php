@@ -151,7 +151,14 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
+        $shopId = $booking->shop_mechanic_id;
 
+        $shop = User::where('id', $shopId)->first();
+
+        $shop->update([
+            'status' => 'idle',
+        ]);
+        
         if(!$booking){
             return response([
                 'message' => 'does not exist'
