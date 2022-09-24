@@ -222,7 +222,7 @@ class ShopMechanicController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
-        $booking = Booking::where('shop_mechanic_id', $id)->first();
+        $booking = Booking::where('shop_mechanic_id', $id)->where('status', 'pending')->first();
 
         if(!$booking){
             return response([
