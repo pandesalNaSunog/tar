@@ -126,6 +126,30 @@ class ShopMechanicController extends Controller
         return response($booking, 200);
     }
 
+    public function denyBooking(Request $request){
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $userType = $user->user_type;
+
+        if($userType != 'mechanic' && $userType != 'owner'){
+            return response([
+                'message' => 'you are not mechanic/shop',
+            ], 401);
+        }
+
+        $booking = Booking::where('id', $request['booking_id'])->first();
+
+        $booking->update([
+            'status' => 'denied'
+        ]);
+
+        return response($booking, 200);
+    }
+
     public function checkBookingStatus(Request $request){
         $request->validate([
             'booking_id' => 'required'
