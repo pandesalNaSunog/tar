@@ -210,11 +210,15 @@ class ShopMechanicController extends Controller
         if($booking){
             return response([
                 'message' => 'has booking',
+                'status' => $booking->status,
+                'id' => $booking->id
             ], 200);
         }
 
         return response([
-            'message' => 'no booking'
+            'message' => 'no booking',
+            'status' => 'no booking',
+            'id' => 0
         ], 200);
     }
 
