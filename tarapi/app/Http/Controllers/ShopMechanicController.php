@@ -162,7 +162,10 @@ class ShopMechanicController extends Controller
         $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
         $status = $booking->status;
 
-        $booking->delete();
+        if($status == 'denied'){
+            $booking->delete();
+        }
+        
 
         return response([
             'status' => $status
