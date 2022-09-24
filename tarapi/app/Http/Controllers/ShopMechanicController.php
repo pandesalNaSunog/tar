@@ -195,11 +195,13 @@ class ShopMechanicController extends Controller
                 'message' => 'does not exist'
             ]);
         }
-
-        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id);
         $booking->update([
             'status' => 'cancelled by the customer'
         ]);
+
+        $response = [
+            'status' => $bookin->status
+        ];
 
         return response($booking, 200);
     }
