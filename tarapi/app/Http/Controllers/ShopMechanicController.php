@@ -160,9 +160,12 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
+        $status = $booking->status;
+
+        $booking->delete();
 
         return response([
-            'status' => $booking->status
+            'status' => $status
         ], 200);
     }
 
