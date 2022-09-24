@@ -196,7 +196,10 @@ class ShopMechanicController extends Controller
             ]);
         }
 
-        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->delete();
+        $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id);
+        $booking->update([
+            'status' => 'cancelled by the customer'
+        ]);
 
         return response($booking, 200);
     }
