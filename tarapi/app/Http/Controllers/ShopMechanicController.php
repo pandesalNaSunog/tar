@@ -133,6 +133,7 @@ class ShopMechanicController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
+        $user = User::where('id', $id)->first();
         $userType = $user->user_type;
 
         if($userType != 'mechanic' && $userType != 'owner'){
