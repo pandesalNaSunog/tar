@@ -200,7 +200,7 @@ class ShopMechanicController extends Controller
         ]);
 
         $response = [
-            'status' => $bookin->status
+            'status' => $bookinh->status
         ];
 
         return response($booking, 200);
