@@ -59,7 +59,7 @@ class ShopMechanicController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
-        $checkBooking = Booking::where('customer_id', $id)->first();
+        $checkBooking = Booking::where('customer_id', $id)->where('status','pending')->first();
         if($checkBooking){
             return response([
                 'message' => 'you are currently booked'
@@ -143,9 +143,13 @@ class ShopMechanicController extends Controller
         }
 
         $booking = Booking::where('id', $request['booking_id'])->first();
-
+        if($user->status == 'busy'){
+            $user->update([
+                'status' => 'idle'
+            ]);
+        }
         $booking->update([
-            'status' => 'denied'
+            'status' => 'denied',
         ]);
 
         return response($booking, 200);
