@@ -124,7 +124,7 @@ class AuthController extends Controller
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        $mail->setFrom('floresjem8@gmail.com', 'Jem Flores');
+        $mail->setFrom('admin@tapandrepair.online', 'Tap And Repair');
         $mail->addAddress('floresjem8@gmail.com');
         $mail->isHTML(true);
 
