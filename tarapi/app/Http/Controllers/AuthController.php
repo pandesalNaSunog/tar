@@ -10,26 +10,46 @@ use App\Models\User;
 use App\Models\Booking;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
+use App\Models\OTP;
 
 class AuthController extends Controller
 {
     public function register(Request $request){
+        function generateOTP(){
+            $numbers = "1234567890";
+            $otp = "";
+            for($i = 0; $i < 6; $i++){
+                $index = rand(0, strlen($numbers) - 1);
+                $otp .= $numbers[$index];
+            }
+
+            return $otp;
+        }
+
         $request->validate([
             'user_type' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'contact_number' => 'required',
+            'valid_id' => 'required',
             'password' => 'required',
+            'email' => 'required'
         ]);
 
-        $checkUser = User::where('contact_number', $request['contact_number'])->first();
+        $checkUser = User::where('contact_number', $request['contact_number'])->orWhere('email', $request['email'])->first();
 
         if($checkUser){
             return response([
-                'message' => 'contact number already exists'
+                'message' => 'contact/email address already exists'
             ], 401);
         }
+
+
+        $validId = base64_decode($request['valid_id']);
+        $filepath = uniqid() . ".jpg";
+        file_put_contents($filepath, $validId);
+
+        
 
 
         $user = User::create([
@@ -39,14 +59,61 @@ class AuthController extends Controller
             'password' => bcrypt($request['password']),
             'user_type' => $request['user_type'],
             'email' => $request['email'],
+            'valid_id' => $filepath,
             'approval_status' => 'Pending',
             'status' => 'idle',
+            'verified' => 'no'
         ]);
 
+
+        $otpText = generateOTP();
+
+        $otp = OTP::where('user_id', $user->id)->first();
+
+        if(!$otp){
+            $otp = OTP::create([
+                'user_id' => $user->id,
+                'otp' => $otpText
+            ]);
+        }else{
+            $otp->update([
+                'otp' => $otpText
+            ]);
+        }
+        
+
+        
+
+
+        $mail = new PHPMailer(true);
+
+        $mail->SMTPDebug = 4;
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'tapandrepair@gmail.com';
+        $mail->Password = 'jamxdnzynricpvlr';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+
+        $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
+        $mail->addAddress($request['email']);
+        $mail->isHTML(true);
+
+        $mail->Subject = 'One Time Password';
+        $mail->Body = 'Your OTP is ' . $otpText . ". ";
+
+        if(!$mail->send()){
+            $user->delete();
+            return response ([
+                'message' => 'email is invalid'
+            ], 401);
+        }
+
         return response([
-            'message' => 'registered'
-        ]
-        ,200);
+            'message' => 'we have sent you an OTP.'
+        ]);
+        
     }
 
     public function login(Request $request){
@@ -125,16 +192,12 @@ class AuthController extends Controller
         $mail->Port = 465;
 
         $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
-        $mail->addAddress('mejserolf@gmail.com');
+        $mail->addAddress($request['email']);
         $mail->isHTML(true);
 
         $mail->Subject = 'Sample Subject';
         $mail->Body = 'Sample Body';
 
         $mail->send();
-
-        return response([
-            'message' => 'sent'
-        ]);
     }
 }
