@@ -997,6 +997,7 @@
                                 },
                                 success: function(response){
                                     var data = JSON.parse(response);
+                                    documents.prop('src', "../tarapi/public/" + data.documents);
                                 }
                             })
                         })
@@ -1283,6 +1284,7 @@
                                 },
                                 success: function(response){
                                     var data = JSON.parse(response);
+                                    documents.prop('src', "../tarapi/public/" + data.documents);
                                 }
                             })
                         })
