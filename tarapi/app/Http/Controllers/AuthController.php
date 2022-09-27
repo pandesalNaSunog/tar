@@ -8,6 +8,10 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Booking;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
 class AuthController extends Controller
 {
     public function register(Request $request){
@@ -106,5 +110,27 @@ class AuthController extends Controller
         return response([
             'user_type' => $userType
         ], 200);
+    }
+
+    public function sampleMail(){
+        $mail = new PHPMailer(true);
+
+        $mail->SMTPDebug = 4;
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'floresjem8@gmail.com';
+        $mail->Password = 'murcielago11';
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 587;
+
+        $mail->setFrom('floresjem8@gmail.com', 'Jem Flores');
+        $mail->addAddress('floresjem8@gmail.com');
+        $mail->isHTML(true);
+
+        $mail->Subject = 'Sample Subject';
+        $mail->Body = 'Sample Body';
+
+        $mail->send();
     }
 }
