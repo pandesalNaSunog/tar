@@ -548,7 +548,6 @@
                                 });
                                 var editApprovedUserBtn = $('.editApprovedUserBtn');
                                 var terminateApprovedUserBtn = $('.terminateApprovedUserBtn');
-
                                 editApprovedUserBtn.click(function(){
                                     globalProductId = $(this).val();
                                 });
@@ -683,7 +682,7 @@
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
                                     <td>
-                                        <button class="btn positive-btn" value="${value.id}">View</button>
+                                        <button class="view-documents btn positive-btn" value="${value.id}">View</button>
                                     <td>
                                         <button class="approveRequestBtn btn positive-btn" value="${value.id}">Approve</button>
                                         <button class="declineRequestBtn btn negative-btn" value="${value.id}">Decline</button>
@@ -693,7 +692,21 @@
                         });
                         var approveRequestBtn = $('.approveRequestBtn');
                         var declineRequestBtn = $('.declineRequestBtn');
+                        var viewDocuments = $('#view-documents');
 
+                        viewDocuments.on('click', function(){
+                            globalProductId = $(this).val();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/viewDocuments.php',
+                                data:{
+                                    user_id: globalProductId,
+                                },
+                                success: function(response){
+                                    console.log(response);
+                                }
+                            })
+                        })
                         approveRequestBtn.click(function(){
                             if(confirm('Approve this Request?') == true){
                                 var thisButton = $(this);
