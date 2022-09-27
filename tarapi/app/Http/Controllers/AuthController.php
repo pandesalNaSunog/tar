@@ -132,5 +132,9 @@ class AuthController extends Controller
         $mail->Body = 'Sample Body';
 
         $mail->send();
+
+        return response([
+            'message' => 'sent'
+        ]);
     }
 }
