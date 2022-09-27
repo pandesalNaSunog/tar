@@ -132,7 +132,7 @@ class AuthController extends Controller
         if($otp){
             $user = User::where('id', $id)->first();
             $user->update([
-                'verified', 'yes',
+                'verified' => 'yes',
             ]);
             return response([
                 'message' => 'verified',
