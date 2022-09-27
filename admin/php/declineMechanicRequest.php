@@ -53,7 +53,7 @@
         $mail->addAddress($email);
         $mail->isHTML(true);
 
-        $mail->Subject = 'Approved';
+        $mail->Subject = 'Declined';
         $mail->Body = 'Your account has been declined by the administrator.';
         $mail->send();
     }
