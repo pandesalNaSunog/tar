@@ -85,30 +85,30 @@ class AuthController extends Controller
         
 
 
-        $mail = new PHPMailer(true);
+        // $mail = new PHPMailer(true);
 
-        $mail->SMTPDebug = 4;
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'tapandrepair@gmail.com';
-        $mail->Password = 'jamxdnzynricpvlr';
-        $mail->SMTPSecure = 'tcp';
-        $mail->Port = 465;
+        // $mail->SMTPDebug = 4;
+        // $mail->isSMTP();
+        // $mail->Host = 'smtp.gmail.com';
+        // $mail->SMTPAuth = true;
+        // $mail->Username = 'tapandrepair@gmail.com';
+        // $mail->Password = 'jamxdnzynricpvlr';
+        // $mail->SMTPSecure = 'tcp';
+        // $mail->Port = 465;
 
-        $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
-        $mail->addAddress($request['email']);
-        $mail->isHTML(true);
+        // $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
+        // $mail->addAddress($request['email']);
+        // $mail->isHTML(true);
 
-        $mail->Subject = 'One Time Password';
-        $mail->Body = 'Your OTP is ' . $otpText . ". ";
+        // $mail->Subject = 'One Time Password';
+        // $mail->Body = 'Your OTP is ' . $otpText . ". ";
 
-        if(!$mail->send()){
-            $user->delete();
-            return response ([
-                'message' => 'email is invalid'
-            ], 401);
-        }
+        // if(!$mail->send()){
+        //     $user->delete();
+        //     return response ([
+        //         'message' => 'email is invalid'
+        //     ], 401);
+        // }
 
         return response([
             'message' => 'we have sent you an OTP.'
