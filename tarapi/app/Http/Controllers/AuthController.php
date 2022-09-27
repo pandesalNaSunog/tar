@@ -119,8 +119,8 @@ class AuthController extends Controller
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'floresjem8@gmail.com';
-        $mail->Password = 'glbviqmhqvzxoqre';
+        $mail->Username = 'admin@tapandrepair.online';
+        $mail->Password = 'Administrator_123';
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
