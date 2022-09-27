@@ -168,6 +168,12 @@ class AuthController extends Controller
             ], 400);
         }
 
+        if($user->approval_status != 'Approved'){
+            return response([
+                'message' => 'Your account is not yet approved. Please wait for the administrator to approve your account.'
+            ], 401);
+        }
+
         $token = $user->createToken('myAppToken')->plainTextToken;
 
         return response([
