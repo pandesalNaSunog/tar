@@ -150,12 +150,18 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('verified', 'yes')->where('contact_number', $request['contact_number'])->orWhere('email', $request['contact_number'])->first();
+        $user = User::where('contact_number', $request['contact_number'])->orWhere('email', $request['contact_number'])->first();
 
         if(!$user || !Hash::check($request['password'], $user->password)){
             return response([
                 'message' => 'invalid contact and password'
-            ], 401);
+            ], 404);
+        }
+
+        if($user->verified == 'no'){
+            return response([
+                'message' => 'your account is not verified'
+            ], 400);
         }
 
         $token = $user->createToken('myAppToken')->plainTextToken;
