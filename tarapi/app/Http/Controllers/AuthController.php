@@ -62,7 +62,9 @@ class AuthController extends Controller
             'valid_id' => $filepath,
             'approval_status' => 'Pending',
             'status' => 'idle',
-            'verified' => 'no'
+            'verified' => 'no',
+            'shop_name' => $request['shop_name'],
+            'shop_address' => $request['shop_address']
         ]);
 
 
