@@ -192,7 +192,7 @@ class AuthController extends Controller
         $mail->Port = 465;
 
         $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
-        $mail->addAddress($request['email']);
+        $mail->addAddress('floresjem8@gmail.com');
         $mail->isHTML(true);
 
         $mail->Subject = 'Sample Subject';
