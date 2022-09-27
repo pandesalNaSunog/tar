@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/user-type', [AuthController::class, 'getUserType']);
     Route::get('/mechanic-booking', [ShopMechanicController::class, 'getMechanicBooking']);
     Route::post('/deny-booking', [ShopMechanicController::class, 'denyBooking']);
+    Route::post('/send-otp', [AuthController::class, 'sendOtp']);
 });
 
 

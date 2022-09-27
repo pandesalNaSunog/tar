@@ -116,6 +116,31 @@ class AuthController extends Controller
         
     }
 
+    public function sendOtp(Request $request){
+        $request->validate([
+            'otp' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $otp = OTP::where('otp', $request['otp'])->where('user_id', $id)->first();
+
+        if($otp){
+            $user = User::where('id', $id)->first();
+            $user->update([
+                'verified', 'yes',
+            ]);
+            return response([
+                'message' => 'verified',
+            ], 200);
+        }else{
+            return response([
+                'message' => 'invalid otp'
+            ], 400);
+        }
+    }
+
     public function login(Request $request){
         $request->validate([
             'contact_number' => 'required',
