@@ -117,14 +117,14 @@ class AuthController extends Controller
 
         $mail->SMTPDebug = 4;
         $mail->isSMTP();
-        $mail->Host = 'smtp.tapandrepair.online';
+        $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'admin@tapandrepair.online';
-        $mail->Password = 'Administrator_123';
+        $mail->Username = 'tapandrepair@gmail.com';
+        $mail->Password = 'jamxdnzynricpvlr';
         $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
-        $mail->setFrom('admin@tapandrepair.online', 'Tap And Repair');
+        $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
         $mail->addAddress('mejserolf@gmail.com');
         $mail->isHTML(true);
 
