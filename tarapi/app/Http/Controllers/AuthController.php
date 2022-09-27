@@ -93,7 +93,7 @@ class AuthController extends Controller
         $mail->SMTPAuth = true;
         $mail->Username = 'tapandrepair@gmail.com';
         $mail->Password = 'jamxdnzynricpvlr';
-        $mail->SMTPSecure = 'tcp';
+        $mail->SMTPSecure = 'ssl';
         $mail->Port = 465;
 
         $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
