@@ -87,6 +87,8 @@
         var allOwnerBtn = $('#allOwnerBtn');
         var searchOwnerInput = $('#searchOwnerInput');
         var searchOwnerBtn = $('#searchOwnerBtn');
+
+        var documents = $('#documents');
         
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
@@ -682,7 +684,7 @@
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
                                     <td>
-                                        <button class="view-documents btn positive-btn" value="${value.id}">View</button>
+                                        <button class="view-documents btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#documents-modal">View</button>
                                     <td>
                                         <button class="approveRequestBtn btn positive-btn" value="${value.id}">Approve</button>
                                         <button class="declineRequestBtn btn negative-btn" value="${value.id}">Decline</button>
@@ -703,7 +705,9 @@
                                     user_id: globalProductId,
                                 },
                                 success: function(response){
-                                    console.log(response);
+                                    var data = JSON.parse(response);
+
+                                    documents.prop('src', "../tarapi/public/" + data.documents);
                                 }
                             })
                         })
@@ -971,7 +975,7 @@
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
                                     <td>
-                                        <button class="btn positive-btn" value="${value.id}">View</button>
+                                        <button class="view-documents btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#documents-modal">View</button>
                                     <td>
                                     <td>
                                         <button class="approveMechanicRequestBtn btn positive-btn" value="${value.id}">Approve</button>
@@ -982,6 +986,20 @@
                         });
                         var approveMechanicRequestBtn = $('.approveMechanicRequestBtn');
                         var declineMechanicRequestBtn = $('.declineMechanicRequestBtn');
+                        var viewDocuments = $('.view-documents');
+                        viewDocuments.on('click', function(){
+                            globalProductId = $(this).val();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/viewDocuments.php',
+                                data:{
+                                    user_id: globalProductId,
+                                },
+                                success: function(response){
+                                    var data = JSON.parse(response);
+                                }
+                            })
+                        })
 
                         approveMechanicRequestBtn.click(function(){
                             if(confirm('Approve This Request?') == true){
@@ -1243,7 +1261,7 @@
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
                                     <td>
-                                        <button class="btn positive-btn" value="${value.id}">View</button>
+                                        <button class="view-documents btn positive-btn" value="${value.id}" data-bs-toggle="modal" data-bs-target="#documents-modal">View</button>
                                     <td>
                                     <td>
                                         <button class="approveShopOwnerRequestBtn btn positive-btn" value="${value.id}">Approve</button>
@@ -1254,6 +1272,20 @@
                         });
                         var approveShopOwnerRequestBtn = $('.approveShopOwnerRequestBtn');
                         var declineShopOwnerRequestBtn = $('.declineShopOwnerRequestBtn');
+                        var viewDocuments = $('.view-documents');
+                        viewDocuments.on('click', function(){
+                            globalProductId = $(this).val();
+                            $.ajax({
+                                type: 'POST',
+                                url: 'php/viewDocuments.php',
+                                data:{
+                                    user_id: globalProductId,
+                                },
+                                success: function(response){
+                                    var data = JSON.parse(response);
+                                }
+                            })
+                        })
 
                         approveShopOwnerRequestBtn.click(function(){
                             if(confirm('Approve This Request?') == true){
@@ -1934,6 +1966,23 @@
                         <div class="invalid-feedback">Invalid Contact Number</div>
                         <button id="mechanicContactNumberUpdateBtn" class="btn btn-md positive-btn mt-2">Update Contact Number</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div style="background-color: darkBlue;" class="modal-header">
+                    <div class="modal-title">
+                        <h4 class="text-ligh fw-bold">
+                            Submitted Documents
+                        </h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <img id="documents" style="width: 100%; height:auto" alt="">
                 </div>
             </div>
         </div>
