@@ -130,6 +130,8 @@ class AuthController extends Controller
         $otp = OTP::where('otp', $request['otp'])->where('user_id', $id)->first();
 
         if($otp){
+
+            $otp->delete();
             $user = User::where('id', $id)->first();
             $user->update([
                 'verified' => 'yes',

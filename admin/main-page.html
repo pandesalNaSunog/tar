@@ -683,6 +683,8 @@
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
                                     <td>
+                                        <button class="positive-btn" value="${value.id}">View</button>
+                                    <td>
                                         <button class="approveRequestBtn btn positive-btn" value="${value.id}">Approve</button>
                                         <button class="declineRequestBtn btn negative-btn" value="${value.id}">Decline</button>
                                     </td>
@@ -956,6 +958,9 @@
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
                                     <td>
+                                        <button class="positive-btn" value="${value.id}">View</button>
+                                    <td>
+                                    <td>
                                         <button class="approveMechanicRequestBtn btn positive-btn" value="${value.id}">Approve</button>
                                         <button class="declineMechanicRequestBtn btn negative-btn" value="${value.id}">Decline</button>
                                     </td>
@@ -1224,6 +1229,9 @@
                                     <td>${value.email}</td>
                                     <td>${value.contact_number}</td>
                                     <td>${value.created_at}</td>
+                                    <td>
+                                        <button class="positive-btn" value="${value.id}">View</button>
+                                    <td>
                                     <td>
                                         <button class="approveShopOwnerRequestBtn btn positive-btn" value="${value.id}">Approve</button>
                                         <button class="declineShopOwnerRequestBtn btn negative-btn" value="${value.id}">Decline</button>
@@ -1647,6 +1655,7 @@
                                     <th scope="col">E-mail Address</th>
                                     <th scope="col">Contact Number</th>
                                     <th scope="col">Date Requested</th>
+                                    <th scope="col">Submitted Documents</th>
                                     <th scope="col">Operations</th>
                                 </thead>
                                 <tbody id="userTable">
@@ -1747,7 +1756,7 @@
             <div class="container">
                 <div class="card mt-5 rounded-2 shadow">
                     <div class="card-header">
-                        <h4 class="fw-bold my-3 mx-5">Request Mechanics:</h4>
+                        <h4 class="fw-bold my-3 mx-5">Mechanics Requested:</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -1757,6 +1766,7 @@
                                     <th scope="col">E-mail Address</th>
                                     <th scope="col">Contact Number</th>
                                     <th scope="col">Date Requested</th>
+                                    <th scope="col">Submitted Documents</th>
                                     <th scope="col">Operations</th>
                                 </thead>
                                 <tbody id="requestMechanicsTable">
@@ -1824,6 +1834,7 @@
                                     <th scope="col">E-mail Address</th>
                                     <th scope="col">Contact Number</th>
                                     <th scope="col">Date Requested</th>
+                                    <th scope="col">Submitted Documents</th>
                                     <th scope="col">Operations</th>
                                 </thead>
                                 <tbody id="shopOwnersRequestTable">
