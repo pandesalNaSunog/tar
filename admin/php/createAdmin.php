@@ -2,8 +2,6 @@
     //if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'){
         date_default_timezone_set('Asia/Manila');
         $today = date('Y-m-d H:i:s');
-        include('connection.php');
-        $con = connect();
         $con = new mysqli ("localhost","u568496919_tar","TarPassword11","u568496919_tar_db");
 
         $query = "SELECT * FROM users WHERE user_type = 'admin'";
