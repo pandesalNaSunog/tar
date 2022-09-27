@@ -66,6 +66,8 @@ class AuthController extends Controller
         ]);
 
 
+        $token = $user->createToken('myAppToken')->plainTextToken;
+
         $otpText = generateOTP();
 
         $otp = OTP::where('user_id', $user->id)->first();
@@ -111,8 +113,9 @@ class AuthController extends Controller
         }
 
         return response([
-            'message' => 'we have sent you an OTP.'
-        ]);
+            'message' => 'we have sent you an OTP.',
+            'token' => $token
+        ], 200);
         
     }
 
