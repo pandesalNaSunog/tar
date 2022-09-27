@@ -120,9 +120,9 @@ class AuthController extends Controller
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'floresjem8@gmail.com';
-        $mail->Password = 'murcielago11';
+        $mail->Password = 'glbviqmhqvzxoqre';
         $mail->SMTPSecure = 'ssl';
-        $mail->Port = 587;
+        $mail->Port = 465;
 
         $mail->setFrom('floresjem8@gmail.com', 'Jem Flores');
         $mail->addAddress('floresjem8@gmail.com');
