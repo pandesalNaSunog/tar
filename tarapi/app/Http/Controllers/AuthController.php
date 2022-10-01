@@ -49,9 +49,8 @@ class AuthController extends Controller
         $filepath = uniqid() . ".jpg";
         file_put_contents($filepath, $validId);
 
-        $certification = base64_decode($request['certification']);
-        $certificationPath = uniqid() . ".jpg";
-        file_put_contents($certificationPath, $certification);
+
+        
 
         
 
@@ -73,6 +72,13 @@ class AuthController extends Controller
             'lat' => $request['lat'],
             'long' => $request['long']
         ]);
+        
+        if($user->user_type != 'user'){
+            $certification = base64_decode($request['certification']);
+            $certificationPath = uniqid() . ".jpg";
+            file_put_contents($certificationPath, $certification);
+        }
+        
 
 
         $token = $user->createToken('myAppToken')->plainTextToken;
