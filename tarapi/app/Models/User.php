@@ -28,6 +28,11 @@ class User extends Authenticatable
         'status',
         'verified',
         'valid_id',
+        'shop_name',
+        'shop_address',
+        'certification',
+        'lat',
+        'long',
     ];
 
     /**
