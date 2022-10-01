@@ -1013,15 +1013,15 @@
                                 },
                                 success: function(response){
                                     var data = JSON.parse(response);
-                                    if(data.user_type == 'user'){
-                                        validId.prop('src', "../tarapi/public/" + data.valid_id);
-                                    }else{
+                                    validId.prop('src', "../tarapi/public/" + data.valid_id);
+                                    if(data.user_type != 'user'){
                                         if(data.user_type == 'mechanic'){
                                             certificateType.text('Mechanic Certificate: ')
                                         }else{
                                             certificateType.text('Business Permit')
                                         }
-                                        certification.show()
+                                        certificateType.show();
+                                        certification.show();
                                         certification.prop('src',"../tarapi/public/" + data.certification)
                                     }
                                     
@@ -1313,15 +1313,15 @@
                                 },
                                 success: function(response){
                                     var data = JSON.parse(response);
-                                    if(data.user_type == 'user'){
-                                        validId.prop('src', "../tarapi/public/" + data.valid_id);
-                                    }else{
+                                    validId.prop('src', "../tarapi/public/" + data.valid_id);
+                                    if(data.user_type != 'user'){
                                         if(data.user_type == 'mechanic'){
                                             certificateType.text('Mechanic Certificate: ')
                                         }else{
                                             certificateType.text('Business Permit')
                                         }
-                                        certification.show()
+                                        certificateType.show();
+                                        certification.show();
                                         certification.prop('src',"../tarapi/public/" + data.certification)
                                     }
                                     
