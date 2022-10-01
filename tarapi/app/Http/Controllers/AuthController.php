@@ -49,6 +49,10 @@ class AuthController extends Controller
         $filepath = uniqid() . ".jpg";
         file_put_contents($filepath, $validId);
 
+        $certification = base64_decode($request['certification']);
+        $certificationPath = uniqid() . ".jpg";
+        file_put_contents($certificationPath, $certification);
+
         
 
 
@@ -64,7 +68,10 @@ class AuthController extends Controller
             'status' => 'idle',
             'verified' => 'no',
             'shop_name' => $request['shop_name'],
-            'shop_address' => $request['shop_address']
+            'shop_address' => $request['shop_address'],
+            'certification' => $certificationPath,
+            'lat' => $request['lat'],
+            'long' => $request['long']
         ]);
 
 
