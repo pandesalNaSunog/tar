@@ -701,7 +701,7 @@
                         viewDocuments.on('click', function(){
                             globalProductId = $(this).val();
                             certification.hide();
-                            certificateType.text('...');
+                            certificateType.hide();
                             $.ajax({
                                 type: 'POST',
                                 url: 'php/viewDocuments.php',
@@ -710,15 +710,15 @@
                                 },
                                 success: function(response){
                                     var data = JSON.parse(response);
-                                    if(data.user_type == 'user'){
-                                        validId.prop('src', "../tarapi/public/" + data.valid_id);
-                                    }else{
+                                    validId.prop('src', "../tarapi/public/" + data.valid_id);
+                                    if(data.user_type != 'user'){
                                         if(data.user_type == 'mechanic'){
                                             certificateType.text('Mechanic Certificate: ')
                                         }else{
                                             certificateType.text('Business Permit')
                                         }
-                                        certification.show()
+                                        certificateType.show();
+                                        certification.show();
                                         certification.prop('src',"../tarapi/public/" + data.certification)
                                     }
                                     
@@ -2029,7 +2029,7 @@
                 <div class="modal-body">
                     <p class="fw-bold">Valid ID:</p>
                     <img id="valid-id" style="width: 100%; height:auto" alt="">
-                    <p id="certificate-type"></p>
+                    <p id="certificate-type" class="fw-bold"></p>
                     <img id="certification" class="mt-3" style="width: 100%; height:auto" alt="">
                 </div>
             </div>
