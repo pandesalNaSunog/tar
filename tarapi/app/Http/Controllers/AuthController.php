@@ -50,8 +50,14 @@ class AuthController extends Controller
         file_put_contents($filepath, $validId);
 
 
+        if($request['user_type'] != 'user'){
+            $certification = base64_decode($request['certification']);
+            $certificationPath = uniqid() . ".jpg";
+            file_put_contents($certificationPath, $certification);
+        }else{
+            $certificationPath = "";
+        }
         
-        $certificationPath = "";
         
 
 
@@ -73,11 +79,7 @@ class AuthController extends Controller
             'long' => $request['long']
         ]);
         
-        if($user->user_type != 'user'){
-            $certification = base64_decode($request['certification']);
-            $certificationPath = uniqid() . ".jpg";
-            file_put_contents($certificationPath, $certification);
-        }
+        
         
 
 
