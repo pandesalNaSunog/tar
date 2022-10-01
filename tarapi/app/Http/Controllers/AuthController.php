@@ -33,7 +33,7 @@ class AuthController extends Controller
             'contact_number' => 'required',
             'valid_id' => 'required',
             'password' => 'required',
-            'email' => 'required'
+            'email' => 'required',
         ]);
 
         $checkUser = User::where('contact_number', $request['contact_number'])->orWhere('email', $request['email'])->first();

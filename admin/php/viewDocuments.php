@@ -10,7 +10,9 @@
             $userRow = $user->fetch_assoc();
 
             echo json_encode(array(
-                'documents' => $userRow['valid_id']
+                'valid_id' => $userRow['valid_id'],
+                'certification' => $userRow['certification'],
+                'user_type' => $userRow['user_type']
             ));
         }
     }else{
