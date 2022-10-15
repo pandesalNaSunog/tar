@@ -250,6 +250,21 @@ class ShopMechanicController extends Controller
     }
 
     public function getShops(Request $request){
+        function calculateDistance($latFrom, $longFrom, $latTo, $longTo){
+            $earthRadius = 6371;
+
+            $latitudeFrom = deg2rad($latFrom);
+            $longitudeFrom = deg2rad($longFrom);
+            $latitudeTo = deg2rad($latTo);
+            $longitudeTo = deg2rad($longTo);
+
+            $latDelta = $latitudeTo - $latitudeFrom;
+            $longDelta = $longitudeTo - $longitudeFrom;
+
+            $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
+
+            return round(($angle * $earthRadius), 1);
+        }
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
         $bookings = Booking::where('customer_id', $id)->first();
@@ -259,6 +274,11 @@ class ShopMechanicController extends Controller
                 'message' => 'you are already book to a mechanic/shop',
             ], 401);
         }
+
+        $me = User::where('id', $id)->first();
+
+        $myLat = $me->lat;
+        $myLong = $me->long;
 
         $shops = User::where('user_type', 'owner')->where('status', 'idle')->get();
 
@@ -271,7 +291,11 @@ class ShopMechanicController extends Controller
                 $totalRatings += $ratingItem->rating;
                 $ratingItems++;
             }
-            
+
+            $shopLat = $mechanicItem->lat;
+            $shopLong = $mechanicItem->long;
+
+            $distance = calculateDistance($myLat, $myLong, $shopLat, $shopLong);
 
             if($totalRatings == 0 || $ratingItems == 0){
                 $averageRating = 0;
@@ -282,9 +306,16 @@ class ShopMechanicController extends Controller
 
             $response[] = array(
                 'mechanic' => $mechanicItem,
+                'distance' => $distance,
                 'average_rating' => round($averageRating, 2)
             );
         }
+        $distances = array();
+        foreach($response as $responseItem){
+            $distances[] = $responseItem['distance'];
+        }
+
+        array_multisort($distances, SORT_ASC, $response);
 
         return response($response, 200);
     }
