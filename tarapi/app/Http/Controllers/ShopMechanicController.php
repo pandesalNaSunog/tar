@@ -21,7 +21,7 @@ class ShopMechanicController extends Controller
             $longitudeTo = deg2rad($longTo);
 
             $latDelta = $latitudeTo - $latitudeFrom;
-            $longDelta = $longitudeTo = $longitudeFrom;
+            $longDelta = $longitudeTo - $longitudeFrom;
 
             $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
 
