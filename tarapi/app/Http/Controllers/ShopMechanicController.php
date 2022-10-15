@@ -76,6 +76,12 @@ class ShopMechanicController extends Controller
                 'average_rating' => round($averageRating, 2)
             );
         }
+        $distances = array();
+        foreach($response as $responseItem){
+            $distances[] = $responseItem['distance'];
+        }
+
+        array_multisort($distances, SORT_ASC, $response);
 
         return response($response, 200);
     }
