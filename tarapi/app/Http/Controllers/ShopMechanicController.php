@@ -25,7 +25,7 @@ class ShopMechanicController extends Controller
 
             $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
 
-            return $angle * $earthRadius;
+            return ($angle * $earthRadius) / 1000;
         }
 
         $token = PersonalAccessToken::findToken($request->bearerToken());
