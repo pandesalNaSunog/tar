@@ -12,6 +12,22 @@ class ShopMechanicController extends Controller
 {
     public function getMechanics(Request $request){
 
+        function calculateDistance($latFrom, $longFrom, $latTo, $longTo){
+            $earthRadius = 6371000;
+
+            $latitudeFrom = deg2rad($latFrom);
+            $longitudeFrom = deg2rad($longFrom);
+            $latitudeTo = deg2rad($latTo);
+            $longitudeTo = deg2rad($longTo);
+
+            $latDelta = $latitudeTo - $latitudeFrom;
+            $longDelta = $longitudeTo = $longitudeFrom;
+
+            $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
+
+            return $angle * $earthRadius;
+        }
+
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
@@ -21,13 +37,29 @@ class ShopMechanicController extends Controller
                 'message' => 'you are currently booked to a mechanic/shop'
             ], 401);
         }
+
+
+
+        $me = User::where('id', $id)->first();
+
+        $myLat = $me->lat;
+        $myLong = $me->long;
+
         $mechanics = User::where('user_type', 'mechanic')->where('status', 'idle')->get();
         $response = array();
         foreach($mechanics as $mechanicItem){
             $mechanicId = $mechanicItem->id;
+
+            $mechanicLong = $mechanicItem->long;
+            $mechanicLat = $mechanicItem->lat;
+
             $ratingItems = 0;
             $totalRatings = 0;
             $ratings = Rating::where('mechanic_shop_id', $mechanicId)->get();
+
+
+
+            $distance = calculateDistance($myLat,$myLong,$mechanicLat, $mechanicLong);
             foreach($ratings as $ratingItem){
                 $totalRatings += $ratingItem->rating;
                 $ratingItems++;
@@ -40,6 +72,7 @@ class ShopMechanicController extends Controller
         
             $response[] = array(
                 'mechanic' => $mechanicItem,
+                'distance' => $distance,
                 'average_rating' => round($averageRating, 2)
             );
         }
