@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Laravel\Sanctum;
-use App\Modesl\Message;
+use App\Models\Message;
 use Laravel\Sanctum\PersonalAccessToken;
 class MessageController extends Controller
 {
