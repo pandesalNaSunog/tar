@@ -10,6 +10,28 @@ use App\Models\Rating;
 use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
+
+    public function updateMyLocation(Request $request){
+
+        $request->validate([
+            'lat' => 'required',
+            'long' => 'required'
+        ]);
+
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        $user->update([
+            'lat' => $request['lat'],
+            'long' => $request['long']
+        ]);
+
+        return response($user, 200);
+
+    }
     public function getMechanics(Request $request){
 
         function calculateDistance($latFrom, $longFrom, $latTo, $longTo){
