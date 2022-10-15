@@ -81,7 +81,7 @@ class ShopMechanicController extends Controller
             $distances[] = $responseItem['distance'];
         }
 
-        array_multisort($distances, SORT_DESC, $response);
+        array_multisort($distances, SORT_ASC, $response);
 
         return response($response, 200);
     }
