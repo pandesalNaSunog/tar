@@ -13,7 +13,7 @@ class ShopMechanicController extends Controller
     public function getMechanics(Request $request){
 
         function calculateDistance($latFrom, $longFrom, $latTo, $longTo){
-            $earthRadius = 6371000;
+            $earthRadius = 6371;
 
             $latitudeFrom = deg2rad($latFrom);
             $longitudeFrom = deg2rad($longFrom);
@@ -25,7 +25,7 @@ class ShopMechanicController extends Controller
 
             $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
 
-            return ($angle * $earthRadius) / 1000;
+            return ($angle * $earthRadius);
         }
 
         $token = PersonalAccessToken::findToken($request->bearerToken());
