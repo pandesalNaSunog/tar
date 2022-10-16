@@ -34,7 +34,7 @@ class ShopMechanicController extends Controller
 
         return response([
             'mechanic' => [
-                'name' => $mechanic->name,
+                'name' => $mechanic->first_name . $mechanic->last_name,
                 'lat' => $mechanic->lat,
                 'long' => $mechanic->long
             ],
