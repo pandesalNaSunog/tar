@@ -364,7 +364,11 @@ class ShopMechanicController extends Controller
     public function hasBooking(Request $request){
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
-        $booking = Booking::where('customer_id', $id)->where('status','pending')->orWhere('status', 'accepted')->first();
+        $booking = Booking::where('customer_id', $id)->where(function($query){
+            $query->where('status','pending')
+                ->orWhere('status', 'accepted');
+        })->first();
+                        
         if($booking){
             return response([
                 'message' => 'has booking',
