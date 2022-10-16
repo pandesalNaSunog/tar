@@ -241,6 +241,9 @@ class ShopMechanicController extends Controller
         $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
         $status = $booking->status;
         $shopMechanicId = $booking->shop_mechanic_id;
+
+        $shopMechanicUser = User::where('id', $shopMechanicId)->first();
+        $shopMechanicName = $shopMechanicUser->first_name . " " . $shopMechanicUser->last_name;
         if($status == 'denied'){
             $booking->delete();
         }
@@ -248,7 +251,8 @@ class ShopMechanicController extends Controller
 
         return response([
             'status' => $status,
-            'shop_mechanic_id' => $shopMechanicId
+            'shop_mechanic_id' => $shopMechanicId,
+            'shop_mechanic_name' => $shopMechanicName
         ], 200);
     }
 
