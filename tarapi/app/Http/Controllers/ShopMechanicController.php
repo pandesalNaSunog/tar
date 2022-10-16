@@ -284,7 +284,7 @@ class ShopMechanicController extends Controller
         ]);
 
         $response = [
-            'status' => $bookinh->status
+            'status' => $booking->status
         ];
 
         return response($booking, 200);
@@ -364,7 +364,7 @@ class ShopMechanicController extends Controller
     public function hasBooking(Request $request){
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
-        $booking = Booking::where('customer_id', $id)->first();
+        $booking = Booking::where('customer_id', $id)->where('status','pending')->orWhere('status', 'accepted')->first();
         if($booking){
             return response([
                 'message' => 'has booking',
