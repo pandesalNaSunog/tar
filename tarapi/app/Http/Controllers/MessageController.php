@@ -33,7 +33,11 @@ class MessageController extends Controller
             'message' => htmlspecialchars($request['message'])
         ]);
 
-        return response($message, 200);
+        return response([
+            'message' => $message->message,
+            'mine' => true,
+            'date' => date_format(date_create($message->created_at), "M d, Y h:i A"),
+        ], 200);
     }
 
     public function conversation(Request $request){
