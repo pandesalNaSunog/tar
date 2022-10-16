@@ -11,11 +11,12 @@ use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
 
-    public function updateMyLocation(Request $request){
+    public function mechanicLocation(Request $request){
 
         $request->validate([
             'lat' => 'required',
-            'long' => 'required'
+            'long' => 'required',
+            'mechanic_id' => 'required'
         ]);
 
 
@@ -29,7 +30,20 @@ class ShopMechanicController extends Controller
             'long' => $request['long']
         ]);
 
-        return response($user, 200);
+        $mechanic = User::where('id', $request['mechanic_id'])->first();
+
+        return response([
+            'mechanic' => [
+                'name' => $mechanic->name,
+                'lat' => $mechanic->lat,
+                'long' => $mechanic->long
+            ],
+            'me' => [
+                'name' => 'Your Location',
+                'lat' => $user->lat,
+                'long' => $user->long
+            ]
+        ], 200);
 
     }
     public function getMechanics(Request $request){

@@ -33,7 +33,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/mechanic-booking', [ShopMechanicController::class, 'getMechanicBooking']);
     Route::post('/deny-booking', [ShopMechanicController::class, 'denyBooking']);
     Route::post('/send-otp', [AuthController::class, 'sendOtp']);
-    Route::post('/update-my-location', [ShopMechanicController::class, 'updateMyLocation']);
+    Route::post('/mechanic-location', [ShopMechanicController::class, 'mechanicLocation']);
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::post('/conversation', [MessageController::class, 'conversation']);
 });
