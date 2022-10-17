@@ -11,6 +11,70 @@ use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
 
+    public function mechanicData(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $mechanic = User::where('id', $id)->first();
+        
+        $averageRating = calculateRatings($id);
+        $acceptanceRate = getAcceptancePercentage($id, "acceptance");
+        $cancelationRate = getAcceptancePercentage($id, "cancellation");
+
+
+        return response([
+            'mechanic' => $mechanic,
+            'rating' => $averageRating,
+            'acceptance' => $acceptanceRate,
+            'cancellation' => $cancelationRate
+        ], 200);
+
+        function getAcceptancePercentage($id, $type){
+            $bookings = Booking::where('shop_mechanic_id', $id)->get();
+            $bookingItems = 0;
+            $acceptedBookings = 0;
+            foreach($bookings as $bookingItem){
+                $bookingItems++;
+                if($bookingItem->status == "accepted"){
+                    $acceptedBookings++;
+                }
+            }
+
+            if($bookingItems == 0){
+                $rate = 0;
+            }else{
+                if($type == 'acceptance'){
+                    $rate = ($bookingItems / $acceptedBookings) * 100;
+                }else{
+                    if($bookingItems - $acceptedBookings != 0){
+                        $rate = ($bookingItems / ($bookingItems - $acceptedBookings)) * 100;
+                    }else{
+                        $rate = 0;
+                    }
+                }
+            }
+            
+            
+
+            $rounded = round($acceptanceRate, 2);
+
+            return $rounded;
+        }
+        
+        function calculateRatings($id){
+            $ratings = Rating::where('mechanic_shop_id', $id)->get();
+            $ratingItems = 0;
+            $totalRatings = 0.0;
+            foreach($ratings as $ratingItem){
+                $ratingItems++;
+                $totalRatings += $ratingItem['rating'];
+            }
+
+            $averageRating = round(($totalRatings / $ratingItems), 2);
+
+            return $averageRating;
+        }
+    }
     public function mechanicLocation(Request $request){
 
         $request->validate([

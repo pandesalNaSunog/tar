@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/mechanic-location', [ShopMechanicController::class, 'mechanicLocation']);
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::post('/conversation', [MessageController::class, 'conversation']);
+    Route::get('/mechanic-date', [ShopMechanicController::class, 'mechanicData']);
 });
 
 
