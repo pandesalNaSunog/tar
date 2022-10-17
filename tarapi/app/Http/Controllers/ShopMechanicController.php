@@ -39,7 +39,7 @@ class ShopMechanicController extends Controller
             
             
 
-            $rounded = round($acceptanceRate, 2);
+            $rounded = round($rate, 2);
 
             return $rounded;
         }
