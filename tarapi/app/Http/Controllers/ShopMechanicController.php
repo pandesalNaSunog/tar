@@ -52,12 +52,16 @@ class ShopMechanicController extends Controller
                 $ratingItems++;
                 $totalRatings += $ratingItem['rating'];
             }
-
-            $averageRating = round(($totalRatings / $ratingItems), 2);
+            if($ratingItems != 0){
+                $averageRating = round(($totalRatings / $ratingItems), 2);
+            }else{
+                $averageRating = 0.0;
+            }
+            
 
             return $averageRating;
         }
-        
+
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
