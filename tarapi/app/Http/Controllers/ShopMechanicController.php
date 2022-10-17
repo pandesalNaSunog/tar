@@ -12,23 +12,6 @@ class ShopMechanicController extends Controller
 {
 
     public function mechanicData(Request $request){
-        $token = PersonalAccessToken::findToken($request->bearerToken());
-        $id = $token->tokenable->id;
-
-        $mechanic = User::where('id', $id)->first();
-        
-        $averageRating = calculateRatings($id);
-        $acceptanceRate = getAcceptancePercentage($id, "acceptance");
-        $cancelationRate = getAcceptancePercentage($id, "cancellation");
-
-
-        return response([
-            'mechanic' => $mechanic,
-            'rating' => $averageRating,
-            'acceptance' => $acceptanceRate,
-            'cancellation' => $cancelationRate
-        ], 200);
-
         function getAcceptancePercentage($id, $type){
             $bookings = Booking::where('shop_mechanic_id', $id)->get();
             $bookingItems = 0;
@@ -74,6 +57,25 @@ class ShopMechanicController extends Controller
 
             return $averageRating;
         }
+        
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $mechanic = User::where('id', $id)->first();
+        
+        $averageRating = calculateRatings($id);
+        $acceptanceRate = getAcceptancePercentage($id, "acceptance");
+        $cancelationRate = getAcceptancePercentage($id, "cancellation");
+
+
+        return response([
+            'mechanic' => $mechanic,
+            'rating' => $averageRating,
+            'acceptance' => $acceptanceRate,
+            'cancellation' => $cancelationRate
+        ], 200);
+
+        
     }
     public function mechanicLocation(Request $request){
 
