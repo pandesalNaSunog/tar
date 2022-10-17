@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/send-message', [MessageController::class, 'sendMessage']);
     Route::post('/conversation', [MessageController::class, 'conversation']);
     Route::get('/mechanic-data', [ShopMechanicController::class, 'mechanicData']);
+    Route::get('/has-accepted-booking', [ShopMechanicController::class, 'hasAcceptedBooking']);
 });
 
 

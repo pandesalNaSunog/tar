@@ -486,4 +486,21 @@ class ShopMechanicController extends Controller
             'vehicle_type' => $booking->vehicle_type
         ]);
     }
+
+    public function hasAcceptedBooking(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $booking = Booking::where('shop_mechanic_id', $id)->where('status', 'accepted')->first();
+
+        if(!$booking){
+            return response([
+                'message' => 'no bookings',
+            ], 401);
+        }
+
+        return response([
+            'message' => 'yes'
+        ], 200);
+    }
 }
