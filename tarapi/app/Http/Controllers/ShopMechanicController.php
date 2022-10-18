@@ -303,7 +303,9 @@ class ShopMechanicController extends Controller
             'status' => 'accepted'
         ]);
 
-        return response($booking, 200);
+        return response([
+            'customer_id' => $booking->customer_id,
+        ], 200);
     }
 
     public function denyBooking(Request $request){
