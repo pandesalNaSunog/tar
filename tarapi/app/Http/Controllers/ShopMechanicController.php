@@ -170,9 +170,9 @@ class ShopMechanicController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
-        $bookings = Booking::where('customer_id', $id)->where(function($query){
-            $query->where('status', 'accepted')->orWhere('status', 'pending',)->first();
-        });
+        $bookings = Booking::where('customer_id', $id)->first();
+        //     $query->where('status', 'accepted')->orWhere('status', 'pending',)->first();
+        // });
         if($bookings){
             return response([
                 'message' => 'you are currently booked to a mechanic/shop'
