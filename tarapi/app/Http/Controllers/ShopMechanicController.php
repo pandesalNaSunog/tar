@@ -130,7 +130,7 @@ class ShopMechanicController extends Controller
         //time * speed = distance
         //time = distance / speed
         
-        $time = ($distance / $speed);
+        $time = $speed * ($distance / $speed);
         return response([
             'mechanic' => [
                 'name' => $mechanic->first_name . " " . $mechanic->last_name,
