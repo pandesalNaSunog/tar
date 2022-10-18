@@ -88,6 +88,22 @@ class ShopMechanicController extends Controller
     }
     public function mechanicLocation(Request $request){
 
+        function calculateDistance($latFrom, $longFrom, $latTo, $longTo){
+            $earthRadius = 6371;
+
+            $latitudeFrom = deg2rad($latFrom);
+            $longitudeFrom = deg2rad($longFrom);
+            $latitudeTo = deg2rad($latTo);
+            $longitudeTo = deg2rad($longTo);
+
+            $latDelta = $latitudeTo - $latitudeFrom;
+            $longDelta = $longitudeTo - $longitudeFrom;
+
+            $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
+
+            return round(($angle * $earthRadius), 1);
+        }
+
         $request->validate([
             'lat' => 'required',
             'long' => 'required',
@@ -107,6 +123,14 @@ class ShopMechanicController extends Controller
 
         $mechanic = User::where('id', $request['mechanic_id'])->first();
 
+        $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanicLong);
+        $speed = 60.0;
+
+        //speed = distance / time
+        //time * speed = distance
+        //time = distance / speed
+        
+        $time = ($distance / $speed) * 60;
         return response([
             'mechanic' => [
                 'name' => $mechanic->first_name . " " . $mechanic->last_name,
@@ -117,6 +141,10 @@ class ShopMechanicController extends Controller
                 'name' => 'Your Location',
                 'lat' => $user->lat,
                 'long' => $user->long
+            ],
+            'travel' => [
+                'distance' => round($distance, 2),
+                'time' => $time
             ]
         ], 200);
 
