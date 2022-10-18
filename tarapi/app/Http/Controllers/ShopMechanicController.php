@@ -495,11 +495,13 @@ class ShopMechanicController extends Controller
 
         if(!$booking){
             return response([
-                'message' => 'no bookings',
-            ], 401);
+                'has_booking' => false,
+                'customer_id' => 0
+            ], 200);
         }
 
         return response([
+            'has_booking' => true,
             'customer_id' => $booking->customer_id
         ], 200);
     }
