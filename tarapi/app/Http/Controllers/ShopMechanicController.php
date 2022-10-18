@@ -123,7 +123,7 @@ class ShopMechanicController extends Controller
 
         $mechanic = User::where('id', $request['mechanic_id'])->first();
 
-        $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanicLong);
+        $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanic->long);
         $speed = 60.0;
 
         //speed = distance / time
