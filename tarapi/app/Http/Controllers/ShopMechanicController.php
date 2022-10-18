@@ -100,7 +100,7 @@ class ShopMechanicController extends Controller
             $longDelta = $longitudeTo - $longitudeFrom;
 
             $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latitudeFrom) * cos($latitudeTo) * pow(sin($longDelta / 2), 2)));
-
+            
             return round(($angle * $earthRadius), 1);
         }
 
@@ -124,7 +124,7 @@ class ShopMechanicController extends Controller
         $mechanic = User::where('id', $request['mechanic_id'])->first();
 
         $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanic->long);
-        $speed = 50.0;
+        $speed = 73.3;
 
         //speed = distance / time
         //time * speed = distance
@@ -144,7 +144,7 @@ class ShopMechanicController extends Controller
             ],
             'travel' => [
                 'distance' => $distance,
-                'time' => $time
+                'time' => round($time, 2)
             ]
         ], 200);
 
