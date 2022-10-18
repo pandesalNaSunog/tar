@@ -500,7 +500,7 @@ class ShopMechanicController extends Controller
         }
 
         return response([
-            'message' => 'yes'
+            'customer_id' => $booking->customer_id
         ], 200);
     }
 }
