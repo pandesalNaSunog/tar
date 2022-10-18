@@ -143,7 +143,7 @@ class ShopMechanicController extends Controller
                 'long' => $user->long
             ],
             'travel' => [
-                'distance' => round($distance, 2),
+                'distance' => $distance, 2,
                 'time' => $time
             ]
         ], 200);
