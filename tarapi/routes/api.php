@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/conversation', [MessageController::class, 'conversation']);
     Route::get('/mechanic-data', [ShopMechanicController::class, 'mechanicData']);
     Route::get('/has-accepted-booking', [ShopMechanicController::class, 'hasAcceptedBooking']);
+    Route::post('/fix', [ShopMechanicController::class, 'fix']);
 });
 
 

@@ -11,6 +11,26 @@ use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
 
+    public function fix(Request $request){
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+
+        $booking = Booking::where('id', $request['booking_id'])->first();
+        if(!$booking){
+            return response([
+                'message' => 'does not exist'
+            ], 400);
+        }
+        $booking->update([
+            'status' => 'fixing'
+        ]);
+
+        return response([
+            'status' => $booking->status
+        ], 200);
+    }
+
     public function mechanicData(Request $request){
         function getAcceptancePercentage($id, $type){
             $bookings = Booking::where('shop_mechanic_id', $id)->get();
@@ -126,6 +146,8 @@ class ShopMechanicController extends Controller
         $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanic->long);
         $speed = 40;
 
+        $booking = Booking::where('customer_id', $user->id)->where('shop_mechanic_id', $mechanic->id)->first();
+
         //speed = distance / time
         //time * speed = distance
         //time = distance / speed
@@ -145,7 +167,8 @@ class ShopMechanicController extends Controller
             'travel' => [
                 'distance' => $distance,
                 'time' => round($time, 2)
-            ]
+            ],
+            'booking_status' => $booking->status
         ], 200);
 
     }
