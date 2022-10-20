@@ -31,6 +31,26 @@ class ShopMechanicController extends Controller
         ], 200);
     }
 
+    public function done(Request $request){
+        $request->validate([
+            'booking_id' => 'required'
+        ]);
+
+        $booking = Booking::where('id', $request['booking_id'])->first();
+        if(!$booking){
+            return response([
+                'message' => 'does not exist'
+            ], 400);
+        }
+        $booking->update([
+            'status' => 'done'
+        ]);
+
+        return response([
+            'status' => $booking->status
+        ], 200);
+    }
+
     public function mechanicData(Request $request){
         function getAcceptancePercentage($id, $type){
             $bookings = Booking::where('shop_mechanic_id', $id)->get();
@@ -549,13 +569,15 @@ class ShopMechanicController extends Controller
         if(!$booking){
             return response([
                 'has_booking' => false,
-                'customer_id' => 0
+                'customer_id' => 0,
+                'booking_id' => 0,
             ], 200);
         }
 
         return response([
             'has_booking' => true,
-            'customer_id' => $booking->customer_id
+            'customer_id' => $booking->customer_id,
+            'booking_id' => $booking->id
         ], 200);
     }
 }
