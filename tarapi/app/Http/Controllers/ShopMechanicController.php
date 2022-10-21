@@ -12,6 +12,21 @@ use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
 
+    public function showShopLocations(Request $request){
+        $shops = User::where('user_type', 'owner')->get();
+        $locationResponse = array();
+        foreach($shops as $shop){
+            $locationResponse[] = [
+                'id' => $shop->id,
+                'lat' => $shop->lat,
+                'long' => $shop->long,
+                'shop_name' => $shop->shop_name
+            ];
+        }
+
+        return response($locationResponse, 200);
+    }
+
     public function submitReport(Request $request){
         $request->validate([
             'user_id' => 'required'
