@@ -184,7 +184,7 @@ class ShopMechanicController extends Controller
         $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanic->long);
         $speed = 40;
 
-        $booking = Booking::where('customer_id', $user->id)->where('shop_mechanic_id', $mechanic->id)->first();
+        $booking = Booking::where('customer_id', $user->id)->where('shop_mechanic_id', $mechanic->id)->orWhere('customer_id', $mechanic->id)->where('shop_mechanic_id', $user->id)->first();
 
         //speed = distance / time
         //time * speed = distance
