@@ -11,6 +11,7 @@ use App\Models\Booking;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use App\Models\OTP;
+use App\Models\Violation;
 
 class AuthController extends Controller
 {

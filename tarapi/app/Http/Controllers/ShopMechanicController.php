@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Booking;
 use Laravel\Sanctum;
 use App\Models\Rating;
-use App\Models\Violations;
+use App\Models\Violation;
 use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
@@ -22,7 +22,7 @@ class ShopMechanicController extends Controller
 
         $violation = Violation::create([
             'user_id' => $request['user_id'],
-            'user_two_id' => $request['user_two_id'],
+            'user_two_id' => $id,
             'violation' => $request['violation']
         ]);
 
