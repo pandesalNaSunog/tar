@@ -12,6 +12,7 @@ class Violation extends Model
     protected $fillable = [
         'user_id',
         'user_two_id',
-        'violation'
+        'violation',
+        'viewing_status'
     ];
 }

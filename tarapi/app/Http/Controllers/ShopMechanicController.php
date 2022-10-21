@@ -23,6 +23,7 @@ class ShopMechanicController extends Controller
         $violation = Violation::create([
             'user_id' => $request['user_id'],
             'user_two_id' => $id,
+            'viewing_status' => 'no',
             'violation' => $request['violation']
         ]);
 
