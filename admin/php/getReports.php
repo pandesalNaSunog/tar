@@ -5,6 +5,8 @@
         $query = "SELECT * FROM `violations`";
         $result = mysqli_query($con,$query);
         $productArray = array();
+        $viewingQuery = "UPDATE `violations` SET `viewing_status`='yes'";
+        $con->query($viewingQuery) or die($con->error);
         if($result){
             while($row = mysqli_fetch_assoc($result)){
                 $id = $row['id'];
