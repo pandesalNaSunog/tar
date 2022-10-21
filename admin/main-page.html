@@ -12,7 +12,7 @@
 <script>
     $(document).ready(function(){
         //hidden parts
-        $('#approvedUserSection,#mechanicsSection,#requestMechanicsSection,#shopOwnersSection,#shopOwnersRequestSection,#allUsersBtn,#allMechanicBtn,#allOwnerBtn').hide();
+        $('#approvedUserSection,#mechanicsSection,#requestMechanicsSection,#shopOwnersSection,#shopOwnersRequestSection,#allUsersBtn,#allMechanicBtn,#allOwnerBtn,#reportSection').hide();
         
         var loadingScreen = $('.loadingScreen');
         
@@ -78,6 +78,8 @@
         var inboxM = 0;
         var badgeU = $('#badgeU');
         var inboxU = 0;
+        var badgeR = $('#badgeR');
+        var inboxR = 0;
         var allUsersBtn = $('#allUsersBtn');
         var searchUserInput = $('#searchUserInput');
         var searchUserBtn = $('#searchUserBtn');
@@ -87,6 +89,9 @@
         var allOwnerBtn = $('#allOwnerBtn');
         var searchOwnerInput = $('#searchOwnerInput');
         var searchOwnerBtn = $('#searchOwnerBtn');
+        var reportSection = $('#reportSection');
+        var reportsTable = $('#reportsTable');
+        var navReport = $('#navReport');
 
         var validId = $('#valid-id');
         var certification = $('#certification');
@@ -1425,6 +1430,28 @@
                 }
             });
         };
+        function getReports(){
+            $.ajax({
+                type: 'POST',
+                url: 'php/getReports.php',
+                success:function(response){
+                    loadingScreen.slideUp('fast', function(){
+                        console.log(response)
+                        var data = JSON.parse(response);
+                        $(data).each(function(index,value){
+                            reportsTable.append(`
+                                <tr>
+                                    <td>${value.user_name}</td>
+                                    <td>${value.violation}</td>
+                                    <td>${value.complainant_name}</td>
+                                    <td>${value.date}</td>
+                                </tr>
+                            `);
+                        });
+                    });
+                }
+            });
+        }
         function popperso(){
             $.ajax({
                 type: 'POST',
@@ -1466,6 +1493,18 @@
         popperm();
         popperu();
         
+        navReport.click(function(){
+            loadingScreen.show();
+            approvedUserSection.slideUp('fast');
+            userSection.slideUp('fast');
+            mechanicsSection.slideUp('fast');
+            requestMechanicsSection.slideUp('fast');
+            shopOwnersRequestSection.slideUp('fast');
+            shopOwnersSection.slideUp('fast');
+            reportSection.slideDown('slow');
+            reportsTable.children().remove();
+            getReports();
+        });
         navShopOwners.click(function(){
             loadingScreen.show();
             approvedUserSection.slideUp('fast');
@@ -1473,6 +1512,7 @@
             mechanicsSection.slideUp('fast');
             requestMechanicsSection.slideUp('fast');
             shopOwnersRequestSection.slideUp('fast');
+            reportSection.slideUp('fast');
             shopOwnersSection.slideDown('slow');
             approvedShopOwnersTable.children().remove();
             getShopOwners();
@@ -1485,6 +1525,7 @@
             userSection.slideUp('fast');
             mechanicsSection.slideUp('fast');
             requestMechanicsSection.slideUp('fast');
+            reportSection.slideUp('fast');
             shopOwnersRequestSection.slideDown('slow');
             shopOwnersSection.slideUp('fast');
             getShopOwnersRequests();
@@ -1498,6 +1539,7 @@
             mechanicsSection.slideUp('fast');
             shopOwnersRequestSection.slideUp('fast');
             shopOwnersSection.slideUp('fast');
+            reportSection.slideUp('fast');
             requestMechanicsSection.slideDown('slow');
             getMechanicsRequest();
             popperm();
@@ -1507,6 +1549,7 @@
             approvedMechanicsTable.children().remove();
             approvedUserSection.slideUp('fast');
             userSection.slideUp('fast');
+            reportSection.slideUp('fast');
             mechanicsSection.slideDown('slow');
             requestMechanicsSection.slideUp('fast');
             shopOwnersRequestSection.slideUp('fast');
@@ -1519,6 +1562,7 @@
             userTable.children().remove();
             approvedUserSection.slideUp('fast');
             mechanicsSection.slideUp('fast');
+            reportSection.slideUp('fast');
             userSection.slideDown('slow');
             requestMechanicsSection.slideUp('fast');
             shopOwnersRequestSection.slideUp('fast');
@@ -1531,6 +1575,7 @@
             approvedUsersTable.children().remove();
             userSection.slideUp('fast');
             mechanicsSection.slideUp('fast');
+            reportSection.slideUp('fast');
             approvedUserSection.slideDown('slow');
             requestMechanicsSection.slideUp('fast');
             shopOwnersRequestSection.slideUp('fast');
@@ -1712,6 +1757,14 @@
                               <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="#" id="navAccountRequests">Customer Account Requests</a></li>
                             </ul>
+                       </li>
+                       <li class="nav-item">
+                            <a href="#" class="nav-link mx-2 mt-2" id="navReport">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-octagon-fill" viewBox="0 0 16 16">
+                                    <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                </svg>
+                                Reports
+                            </a>
                        </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link mx-3 mt-2">
@@ -1934,6 +1987,29 @@
                 </div>
             </div>
        </section>
+       <section id="reportSection">
+        <div class="container">
+            <div class="card mt-5 rounded-2 shadow">
+                <div class="card-header">
+                    <h4 class="fw-bold my-3 mx-5">Reports:</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <th scope="col">Reported User</th>
+                                <th scope="col">Violation</th>
+                                <th scope="col">Complainant</th>
+                                <th scope="col">Date</th>
+                            </thead>
+                            <tbody id="reportsTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </section>
    </main>
    <footer></footer>
    <div class="modal fade" id="updateApprovedUserModal">

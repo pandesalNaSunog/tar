@@ -7,9 +7,27 @@ use App\Models\User;
 use App\Models\Booking;
 use Laravel\Sanctum;
 use App\Models\Rating;
+use App\Models\Violations;
 use Laravel\Sanctum\PersonalAccessToken;
 class ShopMechanicController extends Controller
 {
+
+    public function submitReport(Request $request){
+        $request->validate([
+            'user_id' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $violation = Violation::create([
+            'user_id' => $request['user_id'],
+            'user_two_id' => $request['user_two_id'],
+            'violation' => $request['violation']
+        ]);
+
+        return response($violation, 200);
+    }
 
     public function fix(Request $request){
         $request->validate([

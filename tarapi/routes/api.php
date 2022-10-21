@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::get('/has-accepted-booking', [ShopMechanicController::class, 'hasAcceptedBooking']);
     Route::post('/fix', [ShopMechanicController::class, 'fix']);
     Route::post('/done', [ShopMechanicController::class, 'done']);
+    Route::post('/submit-violation', [ShopMechanicController::class, 'submitReport']);
 });
 
 
