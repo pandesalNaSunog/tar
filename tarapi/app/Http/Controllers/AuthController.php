@@ -202,27 +202,36 @@ class AuthController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
         $user = User::where('id', $id)->first(); 
-        $booking = Booking::where('customer_id', $id)->get();
-        $bookingResponse = array();
-        foreach($booking as $bookingItem){
-            $bookingId = $bookingItem->id;
-            $mechanicOrShopId = $bookingItem->shop_mechanic_id;
+        
+        $bookings = Booking::all();
+        $transactionHistory = array();
+        foreach($bookings as $bookingItem){
+            $customerId = $id;
+            if($bookingItem->customer_id == $customerId){
+                
+                $transaction = Transaction::where('booking_id', $bookingItem->id)->first();
 
-            $mechanic = User::where('id', $mechanicOrShopId)->first();
-
-            $name = $mechanic->last_name . "," . $mechanic->first_name;
-            $status = $bookingItem->status;
-
-            $bookingResponse[] = array(
-                'booking_id' => $bookingId,
-                'name' => $name,
-                'status' => $status
-            );
+                if($transaction){
+                    $service = $bookingItem->service;
+                    $vehicleType = $bookingItem->vehicle_type;
+                    $mechanic = User::where('id', $bookingItem->shop_mechanic_id)->first();
+                    $transactionHistory[] = [
+                        'id' => $transaction->id,
+                        'mechanic' => $mechanic->first_name . " " . $mechanic->last_name,
+                        'service' => $service,
+                        'vehicle_type' => $vehicleType,
+                        'amount_charged' => $transaction->amount_charged,
+                        'status' => $transaction->status,
+                        'date' => $transaction->created_at->format('M d, Y h:i A')
+                    ];
+                }
+            }
+                
         }
 
         return response([
             'user' => $user,
-            'bookings' => $bookingResponse
+            'transaction_history' => $bookingResponse
         ], 200);
     }
 
