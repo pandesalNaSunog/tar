@@ -22,18 +22,25 @@ class ShopMechanicController extends Controller
         foreach($bookings as $bookingItem){
             $customerId = $id;
             if($bookingItem->customer_id == $customerId){
-                $service = $bookingItem->service;
-                $vehicleType = $bookingItem->vehicle_type;
+                
                 $transaction = Transaction::where('booking_id', $bookingItem->id)->first();
-                $transactionHistory[] = [
-                    'id' => $transaction->id,
-                    'service' => $service,
-                    'vehicle_type' => $vehicleType,
-                    'amount_charged' => $transaction->amount_charged,
-                    'status' => $transaction->status,
-                    'date' => $transaction->created_at->format('M d, Y h:i A')
-                ];
+
+                if($transaction){
+                    $service = $bookingItem->service;
+                    $vehicleType = $bookingItem->vehicle_type;
+                    $mechanic = User::where('id', $bookingItem->shop_mechanic_id)->first();
+                    $transactionHistory[] = [
+                        'id' => $transaction->id,
+                        'mechanic' => $mechanic->first_name . " " . $mechanic->last_name,
+                        'service' => $service,
+                        'vehicle_type' => $vehicleType,
+                        'amount_charged' => $transaction->amount_charged,
+                        'status' => $transaction->status,
+                        'date' => $transaction->created_at->format('M d, Y h:i A')
+                    ];
+                }
             }
+                
         }
 
         return response($transactionHistory, 200);
