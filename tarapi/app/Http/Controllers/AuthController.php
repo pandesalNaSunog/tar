@@ -12,7 +12,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use App\Models\OTP;
 use App\Models\Violation;
-
+use App\Models\Transaction;
 class AuthController extends Controller
 {
     public function register(Request $request){
