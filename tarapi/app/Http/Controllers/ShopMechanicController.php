@@ -9,6 +9,7 @@ use Laravel\Sanctum;
 use App\Models\Rating;
 use App\Models\Violation;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\Transaction;
 class ShopMechanicController extends Controller
 {
 
@@ -67,7 +68,8 @@ class ShopMechanicController extends Controller
 
     public function done(Request $request){
         $request->validate([
-            'booking_id' => 'required'
+            'booking_id' => 'required',
+            'amount' => 'required',
         ]);
 
         $booking = Booking::where('id', $request['booking_id'])->first();
@@ -80,8 +82,23 @@ class ShopMechanicController extends Controller
             'status' => 'done'
         ]);
 
+        $transaction = Transaction::create([
+            'booking_id' => $booking->id,
+            'amount_charged' => $request['amount'],
+            'status' => 'unpaid',
+        ]);
+        $customerId = $booking->customer_id;
+        $customer = User::where('id', $customerId)->first();
+
+        $customerName = $customer->first_name . " " . $customer->last_name;
+
+
+
         return response([
-            'status' => $booking->status
+            'booking_id' => $booking->id,
+            'customer_name' => $customerName,
+            'service' => $booking->service,
+            'vehicle_type' => $booking->vehicle_type
         ], 200);
     }
 
