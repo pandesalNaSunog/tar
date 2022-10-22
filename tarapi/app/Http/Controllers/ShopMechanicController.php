@@ -67,11 +67,22 @@ class ShopMechanicController extends Controller
     }
 
     public function done(Request $request){
+        
         $request->validate([
             'booking_id' => 'required',
             'amount' => 'required',
         ]);
 
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+
+        $mechanic = User::where('id', $id)->first();
+
+        $mechanic->update([
+            'status' => 'idle'
+        ]);
+        
         $booking = Booking::where('id', $request['booking_id'])->first();
         if(!$booking){
             return response([
