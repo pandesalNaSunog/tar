@@ -13,6 +13,20 @@ use App\Models\Transaction;
 class ShopMechanicController extends Controller
 {
 
+    public function markAsPaid(Request $request){
+        $request->validate([
+            'transaction_id' => 'required'
+        ]);
+
+        $transaction = Transaction::where('id', $request['transaction_id'])->first();
+
+        $transaction->update([
+            'status' => 'paid'
+        ]);
+
+        return response($transaction, 200);
+    }
+
     public function customerTransaction(Request $request){
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
@@ -139,10 +153,10 @@ class ShopMechanicController extends Controller
 
 
         return response([
-            'booking_id' => $booking->id,
+            'transaction_id' => $transaction->id,
             'customer_name' => $customerName,
             'service' => $booking->service,
-            'vehicle_type' => $booking->vehicle_type
+            'vehicle_type' => $booking->vehicle_type,
         ], 200);
     }
 

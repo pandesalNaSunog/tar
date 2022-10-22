@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/submit-violation', [ShopMechanicController::class, 'submitReport']);
     Route::get('/shop-locations', [ShopMechanicController::class, 'showShopLocations']);
     Route::get('/customer-transaction', [ShopMechanicController::class, 'customerTransaction']);
+    Route::post('/mark-as-paid', [ShopMechanicController::class, 'markAsPaid']);
 });
 
 
