@@ -153,7 +153,7 @@ class ShopMechanicController extends Controller
             $acceptedBookings = 0;
             foreach($bookings as $bookingItem){
                 $bookingItems++;
-                if($bookingItem->status == "accepted"){
+                if($bookingItem->status == "accepted" || $bookingItem->status == "done"){
                     $acceptedBookings++;
                 }
             }
