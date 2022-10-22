@@ -13,6 +13,23 @@ use App\Models\Transaction;
 class ShopMechanicController extends Controller
 {
 
+    public function customerTransaction(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $bookings = Booking::all();
+        $transactionHistory = array();
+        foreach($bookings as $bookingItem){
+            $customerId = $id;
+            if($bookingItem->customer_id == $customerId){
+                $transaction = Transaction::where('booking_id', $bookingItem->id)->first();
+                $transactionHistory[] = $transaction;
+            }
+        }
+
+        return response($transactionHistory, 200);
+    }
+
     public function showShopLocations(Request $request){
         $shops = User::where('user_type', 'owner')->get();
         $locationResponse = array();
@@ -82,7 +99,7 @@ class ShopMechanicController extends Controller
         $mechanic->update([
             'status' => 'idle'
         ]);
-        
+
         $booking = Booking::where('id', $request['booking_id'])->first();
         if(!$booking){
             return response([
