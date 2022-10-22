@@ -163,14 +163,14 @@ class ShopMechanicController extends Controller
             }else{
                 if($type == 'acceptance'){
                     if($acceptedBookings != 0){
-                        $rate = ($bookingItems / $acceptedBookings) * 100;
+                        $rate = ($acceptedBookings / $bookingItems) * 100;
                     }else{
                         $rate = 0.0;
                     }
                     
                 }else{
                     if($bookingItems - $acceptedBookings != 0){
-                        $rate = ($bookingItems / ($bookingItems - $acceptedBookings)) * 100;
+                        $rate = (($bookingItems - $acceptedBookings) / $bookingItems) * 100;
                     }else{
                         $rate = 0.0;
                     }
