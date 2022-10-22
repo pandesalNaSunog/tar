@@ -202,7 +202,7 @@ class AuthController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
         $user = User::where('id', $id)->first(); 
-        
+
         $bookings = Booking::all();
         $transactionHistory = array();
         foreach($bookings as $bookingItem){
@@ -231,7 +231,7 @@ class AuthController extends Controller
 
         return response([
             'user' => $user,
-            'transaction_history' => $bookingResponse
+            'transaction_history' => $transactionHistory
         ], 200);
     }
 
