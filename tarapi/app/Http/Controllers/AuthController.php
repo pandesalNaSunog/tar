@@ -15,6 +15,63 @@ use App\Models\Violation;
 use App\Models\Transaction;
 class AuthController extends Controller
 {
+
+    public function passwordFirst(Request $request){
+        $request->validate([
+            'password' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        if(!Hash::check($request['password'], $user->password)){
+            return response([
+                'message' => 'invalid password'
+            ], 401);
+        }
+
+        return response([
+            'message' => 'ok'
+        ], 200);
+    }
+
+    public function updateName(Request $request){
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        $user->update([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name']
+        ]);
+
+        return response($user, 200);
+    }
+
+    public function updatePassword(Request $request){
+        $request([
+            'password' => 'required',
+        ]);
+
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $user = User::where('id', $id)->first();
+
+        $user->update([
+            'password' => bcrypt($request['password'])
+        ]);
+
+        return response($user, 200);
+    }
     public function register(Request $request){
         function generateOTP(){
             $numbers = "1234567890";
