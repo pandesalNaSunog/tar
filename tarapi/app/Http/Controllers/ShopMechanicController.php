@@ -77,7 +77,8 @@ class ShopMechanicController extends Controller
 
     public function submitReport(Request $request){
         $request->validate([
-            'user_id' => 'required'
+            'user_id' => 'required',
+            'violation' => 'required'
         ]);
 
         $token = PersonalAccessToken::findToken($request->bearerToken());
