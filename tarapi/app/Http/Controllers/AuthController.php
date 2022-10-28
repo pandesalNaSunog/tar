@@ -57,7 +57,7 @@ class AuthController extends Controller
     }
 
     public function updatePassword(Request $request){
-        $request([
+        $request->validate([
             'password' => 'required',
         ]);
 
