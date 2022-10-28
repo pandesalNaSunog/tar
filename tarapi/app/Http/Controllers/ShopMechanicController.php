@@ -158,6 +158,7 @@ class ShopMechanicController extends Controller
             'customer_name' => $customerName,
             'service' => $booking->service,
             'vehicle_type' => $booking->vehicle_type,
+            'amount' => $transaction->amount_charged
         ], 200);
     }
 
