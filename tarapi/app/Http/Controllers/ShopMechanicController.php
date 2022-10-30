@@ -218,10 +218,21 @@ class ShopMechanicController extends Controller
             return $averageRating;
         }
 
+        $request->validate([
+            'lat' => 'required',
+            'long' => 'required'
+        ]);
+
+
+
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
         $mechanic = User::where('id', $id)->first();
+        $mechanic->update([
+            'lat' => $request['lat'],
+            'long' => $request['long']
+        ]);
         
         $averageRating = calculateRatings($id);
         $acceptanceRate = getAcceptancePercentage($id, "acceptance");
@@ -232,7 +243,7 @@ class ShopMechanicController extends Controller
             'mechanic' => $mechanic,
             'rating' => $averageRating,
             'acceptance' => $acceptanceRate,
-            'cancellation' => $cancelationRate
+            'cancellation' => $cancelationRate,
         ], 200);
 
         
