@@ -592,17 +592,18 @@ class ShopMechanicController extends Controller
         }
         $request->validate([
             'lat' => 'required',
-            'long' => 'required'
+            'long' => 'required',
+            'vehicle' => 'required'
         ]);
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
         $bookings = Booking::where('customer_id', $id)->where(function($query){
-            $query->where('status', 'accepted')->orWhere('status', 'pending',);
+            $query->where('status', 'accepted')->orWhere('status', 'pending');
         })->first();
 
         if($bookings){
             return response([
-                'message' => 'you are already book to a mechanic/shop',
+                'message' => 'you are already booked to a mechanic/shop',
             ], 401);
         }
 
@@ -614,7 +615,7 @@ class ShopMechanicController extends Controller
         $myLat = $me->lat;
         $myLong = $me->long;
 
-        $shops = User::where('user_type', 'owner')->where('status', 'idle')->get();
+        $shops = User::where('user_type', 'owner')->where('status', 'idle')->where('shop_type','LIKE','%'. $request['vehicle'].'%')->get();
 
         foreach($shops as $mechanicItem){
             $mechanicId = $mechanicItem->id;
