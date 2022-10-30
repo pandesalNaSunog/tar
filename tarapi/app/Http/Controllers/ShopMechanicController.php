@@ -19,14 +19,18 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $activityLog = ActivityLog::where('user_id', $id)->get();
+        $response = array();
 
-        return response([
-            'id' => $activityLog->id,
-            'user_id' => $activityLog->user_id,
-            'activity' => $activityLog->activity,
-            'created_at' => $activityLog->created_at->format('M d, Y h:i A'),
-            'updated_at' => $activityLog->updated_at->format('M d, Y h:i A')
-        ], 200);
+        foreach($activityLog as $activityLogItem){
+            $response[] = [
+                'id' => $activityLog->id,
+                'user_id' => $activityLog->user_id,
+                'activity' => $activityLog->activity,
+                'created_at' => $activityLog->created_at->format('M d, Y h:i A'),
+                'updated_at' => $activityLog->updated_at->format('M d, Y h:i A')
+            ];
+        }
+        return response($response, 200);
     }
 
     public function markAsPaid(Request $request){
