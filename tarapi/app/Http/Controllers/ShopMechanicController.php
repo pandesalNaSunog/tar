@@ -332,6 +332,13 @@ class ShopMechanicController extends Controller
             return round(($angle * $earthRadius), 1);
         }
 
+        $request->validate([
+            'lat' => 'required',
+            'long' => 'required'
+        ]);
+
+
+
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
@@ -347,6 +354,10 @@ class ShopMechanicController extends Controller
 
 
         $me = User::where('id', $id)->first();
+        $me->update([
+            'lat' => $request['lat'],
+            'long' => $request['long']
+        ]);
 
         $myLat = $me->lat;
         $myLong = $me->long;
