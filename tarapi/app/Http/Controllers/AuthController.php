@@ -131,10 +131,14 @@ class AuthController extends Controller
             'status' => 'idle',
             'verified' => 'no',
             'shop_name' => $request['shop_name'],
-            'shop_address' => $request['shop_address'],
             'certification' => $certificationPath,
             'lat' => $request['lat'],
-            'long' => $request['long']
+            'long' => $request['long'],
+            'street_name' => $request['street_name'],
+            'barangay' => $request['barangay'],
+            'municipality' => $request['municipality'],
+            'postal_code' => $request['postal_code'],
+            'shop_type' => $request['shop_type']
         ]);
         
         
@@ -162,30 +166,30 @@ class AuthController extends Controller
         
 
 
-        $mail = new PHPMailer(true);
+        // $mail = new PHPMailer(true);
 
-        $mail->SMTPDebug = 0;
-        $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'tapandrepair@gmail.com';
-        $mail->Password = 'jamxdnzynricpvlr';
-        $mail->SMTPSecure = 'ssl';
-        $mail->Port = 465;
+        // $mail->SMTPDebug = 0;
+        // $mail->isSMTP();
+        // $mail->Host = 'smtp.gmail.com';
+        // $mail->SMTPAuth = true;
+        // $mail->Username = 'tapandrepair@gmail.com';
+        // $mail->Password = 'jamxdnzynricpvlr';
+        // $mail->SMTPSecure = 'ssl';
+        // $mail->Port = 465;
 
-        $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
-        $mail->addAddress($request['email']);
-        $mail->isHTML(true);
+        // $mail->setFrom('tapandrepair@gmail.com', 'Tap And Repair');
+        // $mail->addAddress($request['email']);
+        // $mail->isHTML(true);
 
-        $mail->Subject = 'One Time Password';
-        $mail->Body = 'Your OTP is ' . $otpText . ". ";
+        // $mail->Subject = 'One Time Password';
+        // $mail->Body = 'Your OTP is ' . $otpText . ". ";
 
-        if(!$mail->send()){
-            $user->delete();
-            return response ([
-                'message' => 'email is invalid'
-            ], 401);
-        }
+        // if(!$mail->send()){
+        //     $user->delete();
+        //     return response ([
+        //         'message' => 'email is invalid'
+        //     ], 401);
+        // }
 
         return response([
             'message' => 'we have sent you an OTP.',

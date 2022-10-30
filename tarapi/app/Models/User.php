@@ -33,6 +33,10 @@ class User extends Authenticatable
         'certification',
         'lat',
         'long',
+        'street_name',
+        'barangay',
+        'municipality',
+        'postal_code',
     ];
 
     /**
