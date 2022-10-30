@@ -23,11 +23,11 @@ class ShopMechanicController extends Controller
 
         foreach($activityLog as $activityLogItem){
             $response[] = [
-                'id' => $activityLog->id,
-                'user_id' => $activityLog->user_id,
-                'activity' => $activityLog->activity,
-                'created_at' => $activityLog->created_at->format('M d, Y h:i A'),
-                'updated_at' => $activityLog->updated_at->format('M d, Y h:i A')
+                'id' => $activityLogItem->id,
+                'user_id' => $activityLogItem->user_id,
+                'activity' => $activityLogItem->activity,
+                'created_at' => $activityLogItem->created_at->format('M d, Y h:i A'),
+                'updated_at' => $activityLogItem->updated_at->format('M d, Y h:i A')
             ];
         }
         return response($response, 200);
