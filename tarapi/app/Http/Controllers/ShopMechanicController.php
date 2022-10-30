@@ -334,7 +334,8 @@ class ShopMechanicController extends Controller
 
         $request->validate([
             'lat' => 'required',
-            'long' => 'required'
+            'long' => 'required',
+            'vehicle' => 'required'
         ]);
 
 
@@ -362,7 +363,7 @@ class ShopMechanicController extends Controller
         $myLat = $me->lat;
         $myLong = $me->long;
 
-        $mechanics = User::where('user_type', 'mechanic')->where('status', 'idle')->get();
+        $mechanics = User::where('user_type', 'mechanic')->where('status', 'idle')->where('shop_type','LIKE', '%' . $request['vehicle'] . '%')->get();
         $response = array();
         foreach($mechanics as $mechanicItem){
             $mechanicId = $mechanicItem->id;
