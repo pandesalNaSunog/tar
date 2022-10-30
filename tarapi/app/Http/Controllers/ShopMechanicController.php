@@ -10,6 +10,7 @@ use App\Models\Rating;
 use App\Models\Violation;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Models\Transaction;
+use App\Models\ActivityLog;
 class ShopMechanicController extends Controller
 {
 
@@ -100,6 +101,11 @@ class ShopMechanicController extends Controller
         ]);
 
         $booking = Booking::where('id', $request['booking_id'])->first();
+        $customer = User::where('id', $booking->customer_id)->first();
+        $activity = ActivityLog::create([
+            'user_id' => $id,
+            'activity' => 'You started fixing ' . $customer->first_name . ' ' . $customer->last_name . '\'s vehicle'
+        ]);
         if(!$booking){
             return response([
                 'message' => 'does not exist'
@@ -132,6 +138,11 @@ class ShopMechanicController extends Controller
         ]);
 
         $booking = Booking::where('id', $request['booking_id'])->first();
+        $customer = User::where('id', $booking->customer_id)->first();
+        $activity = ActivityLog::create([
+            'user_id' => $id,
+            'activity' => 'You have fixed ' . $customer->first_name . ' ' . $customer->last_name . '\'s vehicle with for ' . $request['amount'] . ' pesos.'
+        ]);
         if(!$booking){
             return response([
                 'message' => 'does not exist'
@@ -417,6 +428,10 @@ class ShopMechanicController extends Controller
         $token = PersonalAccessToken::findToken($request->bearerToken());
         $id = $token->tokenable->id;
 
+
+        $mechanic = User::where('id', $request['shop_mechanic_id'])->first();
+
+        
         $checkBooking = Booking::where('customer_id', $id)->where('status','pending')->first();
         if($checkBooking){
             return response([
@@ -431,6 +446,11 @@ class ShopMechanicController extends Controller
             'lat' => $request['lat'],
             'long' => $request['long'],
             'status' => 'pending',
+        ]);
+
+        $activity = ActivityLog::create([
+            'user_id' => $id,
+            'activity' => 'You have booked ' . $mechanic->first_name . ' ' . $mechanic->last_name 
         ]);
 
         return response([
@@ -475,8 +495,14 @@ class ShopMechanicController extends Controller
             ], 401);
         }
 
+
         $booking = Booking::where('id', $request['booking_id'])->first();
 
+        $customer = User::where('id', $booking->customer_id)->first();
+        $activity = ActivityLog::create([
+            'user_id' => $id,
+            'activity' => 'You have accepted booking from ' . $customer->first_name . ' ' . $customer->last_name
+        ]);
         $booking->update([
             'status' => 'accepted'
         ]);
@@ -503,6 +529,11 @@ class ShopMechanicController extends Controller
         }
 
         $booking = Booking::where('id', $request['booking_id'])->first();
+        $customer = User::where('id', $booking->customer_id)->first();
+        $activity = ActivityLog::create([
+            'user_id' => $id,
+            'activity' => 'You denied a booking from ' . $customer->first_name . ' ' . $customer->last_name
+        ]);
         if($user->status == 'busy'){
             $user->update([
                 'status' => 'idle'
@@ -551,6 +582,7 @@ class ShopMechanicController extends Controller
         $id = $token->tokenable->id;
 
         $booking = Booking::where('id', $request['booking_id'])->where('customer_id', $id)->first();
+        
         $shopId = $booking->shop_mechanic_id;
 
         $shop = User::where('id', $shopId)->first();
