@@ -20,7 +20,13 @@ class ShopMechanicController extends Controller
 
         $activityLog = ActivityLog::where('user_id', $id)->get();
 
-        return response($activityLog, 200);
+        return response([
+            'id' => $activityLog->id,
+            'user_id' => $activityLog->user_id,
+            'activity' => $activityLog->activity,
+            'created_at' => $activityLog->created_at->format('M d, Y h:i A'),
+            'updated_at' => $activityLog->updated_at->format('M d, Y h:i A')
+        ], 200);
     }
 
     public function markAsPaid(Request $request){
