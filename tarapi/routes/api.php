@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/accept-booking', [ShopMechanicController::class, 'acceptBooking']);
     Route::post('/check-booking-status', [ShopMechanicController::class, 'checkBookingStatus']);
     Route::post('/cancel-booking', [ShopMechanicController::class, 'cancelBooking']);
-    Route::get('/shops', [ShopMechanicController::class, 'getShops']);
+    Route::post('/shops', [ShopMechanicController::class, 'getShops']);
     Route::get('/has-booking', [ShopMechanicController::class, 'hasBooking']);
     Route::get('/user-type', [AuthController::class, 'getUserType']);
     Route::get('/mechanic-booking', [ShopMechanicController::class, 'getMechanicBooking']);
