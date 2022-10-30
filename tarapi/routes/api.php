@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/update-name', [AuthController::class, 'updateName']);
     Route::post('/update-password', [AuthController::class, 'updatePassword']);
     Route::post('/password-first', [AuthController::class, 'passwordFirst']);
+    Route::get('/activity-log', [ShopMechanicController::class, 'activityLog']);
 });
 
 

@@ -14,6 +14,15 @@ use App\Models\ActivityLog;
 class ShopMechanicController extends Controller
 {
 
+    public function activityLog(Request $request){
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
+        $activityLog = ActivityLog::where('user_id', $id)->get();
+
+        return response($activityLog, 200);
+    }
+
     public function markAsPaid(Request $request){
         $request->validate([
             'transaction_id' => 'required'
