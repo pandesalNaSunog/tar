@@ -167,10 +167,13 @@ class ShopMechanicController extends Controller
             $bookings = Booking::where('shop_mechanic_id', $id)->get();
             $bookingItems = 0;
             $acceptedBookings = 0;
+            $cancelledBookings = 0;
             foreach($bookings as $bookingItem){
                 $bookingItems++;
                 if($bookingItem->status == "accepted" || $bookingItem->status == "done"){
                     $acceptedBookings++;
+                }else if($bookingItem->status == "cancelled by the customer" || $bookingItem->status == "denied"){
+                    $cancelledBookings++;
                 }
             }
 
@@ -185,8 +188,8 @@ class ShopMechanicController extends Controller
                     }
                     
                 }else{
-                    if($bookingItems - $acceptedBookings != 0){
-                        $rate = (($bookingItems - $acceptedBookings) / $bookingItems) * 100;
+                    if($cancelledBookings != 0){
+                        $rate = ($cancelledBookings / $bookingItems) * 100;
                     }else{
                         $rate = 0.0;
                     }
