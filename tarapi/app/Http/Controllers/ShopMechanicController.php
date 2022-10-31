@@ -119,6 +119,9 @@ class ShopMechanicController extends Controller
             'booking_id' => 'required'
         ]);
 
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $id = $token->tokenable->id;
+
         $booking = Booking::where('id', $request['booking_id'])->first();
         $customer = User::where('id', $booking->customer_id)->first();
         $activity = ActivityLog::create([
