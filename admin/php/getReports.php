@@ -20,13 +20,13 @@
                 $complainant = $con->query($complainantQuery) or die($con->error);
 
                 $complainantArray = $complainant->fetch_assoc();
-                $complainantName = $complainantArray['last_name'] . ", ". $complainantArray['first_name'];
+                $complainantName = $complainantArray['last_name'] . ", ". $complainantArray['first_name'] . '(' . $complainantArray['user_type'] . ')';
 
                 $userQuery = "SELECT * FROM `users` WHERE id='$userId'";
                 $user = $con->query($userQuery) or die($con->error);
 
                 $userArray = $user->fetch_assoc();
-                $userName = $userArray['last_name'] . ", " . $userArray['first_name'];
+                $userName = $userArray['last_name'] . ", " . $userArray['first_name'] . '(' . $userArray['user_type'] . ')';
                 $productArray[] = array(
                     'id' => $id,
                     'user_name' => $userName,
