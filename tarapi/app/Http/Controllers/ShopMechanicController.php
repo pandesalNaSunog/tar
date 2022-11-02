@@ -303,7 +303,8 @@ class ShopMechanicController extends Controller
         $request->validate([
             'lat' => 'required',
             'long' => 'required',
-            'mechanic_id' => 'required'
+            'mechanic_id' => 'required',
+            'booking_id' => 'required'
         ]);
 
 
@@ -322,7 +323,7 @@ class ShopMechanicController extends Controller
         $distance = calculateDistance($user->lat, $user->long, $mechanic->lat, $mechanic->long);
         $speed = 40;
 
-        $booking = Booking::where('customer_id', $user->id)->where('shop_mechanic_id', $mechanic->id)->orWhere('customer_id', $mechanic->id)->where('shop_mechanic_id', $user->id)->first();
+        $booking = Booking::where('id', $request['booking_id'])->first();
 
         //speed = distance / time
         //time * speed = distance
