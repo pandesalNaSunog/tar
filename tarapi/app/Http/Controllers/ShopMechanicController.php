@@ -591,7 +591,8 @@ class ShopMechanicController extends Controller
         return response([
             'status' => $status,
             'shop_mechanic_id' => $shopMechanicId,
-            'shop_mechanic_name' => $shopMechanicName
+            'shop_mechanic_name' => $shopMechanicName,
+            'id' => $booking->id
         ], 200);
     }
 
