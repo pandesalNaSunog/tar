@@ -37,6 +37,7 @@ class User extends Authenticatable
         'barangay',
         'municipality',
         'postal_code',
+        'shop_type'
     ];
 
     /**
