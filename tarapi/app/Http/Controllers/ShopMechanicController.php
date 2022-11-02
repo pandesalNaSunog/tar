@@ -592,7 +592,7 @@ class ShopMechanicController extends Controller
             'status' => $status,
             'shop_mechanic_id' => $shopMechanicId,
             'shop_mechanic_name' => $shopMechanicName,
-            'id' => $booking->id
+            'booking_id' => $booking->id
         ], 200);
     }
 
