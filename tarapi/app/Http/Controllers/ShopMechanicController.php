@@ -583,9 +583,6 @@ class ShopMechanicController extends Controller
 
         $shopMechanicUser = User::where('id', $shopMechanicId)->first();
         $shopMechanicName = $shopMechanicUser->first_name . " " . $shopMechanicUser->last_name;
-        if($status == 'denied'){
-            $booking->delete();
-        }
         
 
         return response([
